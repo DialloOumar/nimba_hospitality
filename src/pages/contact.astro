@@ -1,0 +1,362 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Icon from '../components/Icon.astro';
+import { SITE } from '../config';
+
+const subjects = [
+  'Projet hôtelier',
+  "Gestion d'établissement",
+  'Restauration & événementiel',
+  'Partenariat / investissement',
+  'Séjour ou voyage en Guinée',
+  'Presse',
+  'Autre demande',
+];
+---
+
+<Base
+  title="Contact"
+  description="Contactez Nimba Hospitality Group à Conakry : projets hôteliers, gestion d'établissements, restauration, partenariats."
+  ogPhoto="sunset"
+>
+  <PageHero photo="sunset" alt="Coucher de soleil sur l'océan Atlantique" eyebrow="Contact">
+    Commençons par <em>nous rencontrer.</em>
+    <p slot="intro">
+      Vous portez un projet hôtelier ou souhaitez en savoir plus sur notre approche ? Écrivez-nous : notre équipe vous
+      répond personnellement.
+    </p>
+  </PageHero>
+
+  <section class="section">
+    <div class="container">
+      <div class="contact">
+        <aside class="contact-info" data-reveal>
+          <span class="eyebrow">Écrivez-nous</span>
+          <a class="contact-big" href={`mailto:${SITE.email}`}>{SITE.email}</a>
+
+          <ul class="contact-list">
+            {
+              SITE.phone && (
+                <li>
+                  <Icon name="phone" />
+                  <div>
+                    <span class="label">Téléphone</span>
+                    <a href={`tel:${SITE.phone.replace(/\s/g, '')}`}>{SITE.phone}</a>
+                  </div>
+                </li>
+              )
+            }
+            {
+              SITE.whatsapp && (
+                <li>
+                  <Icon name="whatsapp" />
+                  <div>
+                    <span class="label">WhatsApp</span>
+                    <a href={`https://wa.me/${SITE.whatsapp}`} target="_blank" rel="noopener">
+                      Discuter sur WhatsApp
+                    </a>
+                  </div>
+                </li>
+              )
+            }
+            <li>
+              <Icon name="pin" />
+              <div>
+                <span class="label">Retrouvez-nous</span>
+                <address>{SITE.address.map((l) => <>{l}<br /></>)}</address>
+              </div>
+            </li>
+            <li>
+              <Icon name="clock" />
+              <div>
+                <span class="label">Horaires</span>
+                <span>Du lundi au vendredi, 9 h – 18 h (GMT)</span>
+              </div>
+            </li>
+          </ul>
+
+          <div class="map">
+            <iframe
+              title="Carte : Camayenne, Dixinn, Conakry"
+              src="https://www.openstreetmap.org/export/embed.html?bbox=-13.7000%2C9.5240%2C-13.6600%2C9.5480&layer=mapnik&marker=9.5367%2C-13.6797"
+              loading="lazy"
+              referrerpolicy="no-referrer"></iframe>
+          </div>
+        </aside>
+
+        <div class="contact-form-wrap" data-reveal style="--delay:.08s">
+          <h2 class="h3">Votre message</h2>
+          <p class="form-intro">Les champs marqués d'un astérisque sont obligatoires.</p>
+
+          <form class="form" data-contact-form data-endpoint={SITE.formEndpoint} data-email={SITE.email} novalidate>
+            <div class="row">
+              <label class="field">
+                <span>Nom complet *</span>
+                <input type="text" name="nom" autocomplete="name" required />
+              </label>
+              <label class="field">
+                <span>E-mail *</span>
+                <input type="email" name="email" autocomplete="email" required />
+              </label>
+            </div>
+            <div class="row">
+              <label class="field">
+                <span>Téléphone</span>
+                <input type="tel" name="telephone" autocomplete="tel" />
+              </label>
+              <label class="field">
+                <span>Société / organisation</span>
+                <input type="text" name="societe" autocomplete="organization" />
+              </label>
+            </div>
+            <label class="field">
+              <span>Objet *</span>
+              <select name="objet" required>
+                <option value="" disabled selected>Choisissez un objet</option>
+                {subjects.map((s) => <option>{s}</option>)}
+              </select>
+            </label>
+            <label class="field">
+              <span>Message *</span>
+              <textarea name="message" rows="6" required></textarea>
+            </label>
+            <input type="text" name="_gotcha" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
+            <label class="consent">
+              <input type="checkbox" name="consentement" required />
+              <span>J'accepte que mes informations soient utilisées pour répondre à ma demande. *</span>
+            </label>
+            <button type="submit" class="btn btn--dark">Envoyer le message <Icon name="arrow" /></button>
+            <p class="form-status" role="status" aria-live="polite" data-status></p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .contact {
+    display: grid;
+    gap: clamp(48px, 6vw, 96px);
+  }
+  @media (min-width: 960px) {
+    .contact {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+      align-items: start;
+    }
+  }
+  .contact-big {
+    display: inline-block;
+    font-family: var(--serif);
+    font-size: clamp(1.8rem, 3.4vw, 2.8rem);
+    line-height: 1.1;
+    color: var(--green-900);
+    word-break: break-word;
+    background: linear-gradient(var(--gold), var(--gold)) left bottom / 0 1px no-repeat;
+    transition: background-size 0.5s var(--ease);
+  }
+  .contact-big:hover {
+    background-size: 100% 1px;
+  }
+  .contact-list {
+    list-style: none;
+    padding: 0;
+    margin: 40px 0;
+    display: grid;
+    gap: 24px;
+  }
+  .contact-list li {
+    display: flex;
+    gap: 16px;
+  }
+  .contact-list :global(svg) {
+    width: 22px;
+    height: 22px;
+    flex: none;
+    color: var(--gold-600);
+    margin-top: 2px;
+  }
+  .contact-list div {
+    display: grid;
+    gap: 2px;
+    color: var(--ink);
+  }
+  .contact-list address {
+    font-style: normal;
+  }
+  .label {
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .map {
+    aspect-ratio: 4 / 3;
+    border: 1px solid var(--line);
+    overflow: hidden;
+    filter: grayscale(0.4) sepia(0.15);
+  }
+  .map iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+
+  .contact-form-wrap {
+    background: var(--white);
+    border: 1px solid var(--line);
+    padding: clamp(28px, 4vw, 56px);
+  }
+  .form-intro {
+    font-size: 0.85rem;
+    margin: 10px 0 32px;
+  }
+  .form {
+    display: grid;
+    gap: 22px;
+  }
+  .row {
+    display: grid;
+    gap: 22px;
+    grid-template-columns: 1fr 1fr;
+  }
+  @media (max-width: 620px) {
+    .row {
+      grid-template-columns: 1fr;
+    }
+  }
+  .field {
+    display: grid;
+    gap: 8px;
+  }
+  .field > span {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--green-800);
+  }
+  .field input,
+  .field select,
+  .field textarea {
+    width: 100%;
+    font: inherit;
+    font-size: 1rem;
+    color: var(--ink);
+    background: var(--ivory);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    transition:
+      border-color 0.3s,
+      box-shadow 0.3s,
+      background 0.3s;
+  }
+  .field textarea {
+    resize: vertical;
+    min-height: 150px;
+  }
+  .field input:focus,
+  .field select:focus,
+  .field textarea:focus {
+    outline: none;
+    background: var(--white);
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(194, 155, 87, 0.2);
+  }
+  .field [aria-invalid='true'] {
+    border-color: #b3412e;
+  }
+  .hp {
+    position: absolute;
+    left: -9999px;
+  }
+  .consent {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+  .consent input {
+    margin-top: 5px;
+    accent-color: var(--green-800);
+    width: 16px;
+    height: 16px;
+    flex: none;
+  }
+  .form .btn {
+    justify-self: start;
+  }
+  .form-status {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--green-700);
+  }
+  .form-status.is-error {
+    color: #b3412e;
+  }
+</style>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('[data-contact-form]');
+  if (form) {
+    const status = form.querySelector<HTMLElement>('[data-status]')!;
+    const endpoint = form.dataset.endpoint ?? '';
+    const email = form.dataset.email ?? '';
+    const setStatus = (msg: string, error = false) => {
+      status.textContent = msg;
+      status.classList.toggle('is-error', error);
+    };
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      let firstInvalid: HTMLElement | null = null;
+      form.querySelectorAll<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>('[required]').forEach((el) => {
+        const ok = el.checkValidity();
+        el.setAttribute('aria-invalid', String(!ok));
+        if (!ok && !firstInvalid) firstInvalid = el;
+      });
+      if (firstInvalid) {
+        (firstInvalid as HTMLElement).focus();
+        setStatus('Merci de compléter les champs obligatoires.', true);
+        return;
+      }
+
+      const data = new FormData(form);
+      if (data.get('_gotcha')) return; // spam trap
+
+      if (!endpoint) {
+        // No form service configured: open the visitor's e-mail client with the message prefilled.
+        const body = [
+          `Nom : ${data.get('nom')}`,
+          `E-mail : ${data.get('email')}`,
+          `Téléphone : ${data.get('telephone') || '-'}`,
+          `Société : ${data.get('societe') || '-'}`,
+          '',
+          String(data.get('message')),
+        ].join('\n');
+        const subject = `[Site web] ${data.get('objet')}`;
+        window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        setStatus("Votre logiciel de messagerie va s'ouvrir avec votre message prérempli.");
+        return;
+      }
+
+      const btn = form.querySelector<HTMLButtonElement>('button[type="submit"]')!;
+      btn.disabled = true;
+      setStatus('Envoi en cours…');
+      try {
+        const res = await fetch(endpoint, { method: 'POST', body: data, headers: { Accept: 'application/json' } });
+        if (!res.ok) throw new Error(String(res.status));
+        form.reset();
+        setStatus('Merci ! Votre message a bien été envoyé. Nous vous répondrons très vite.');
+      } catch {
+        setStatus(`L'envoi a échoué. Écrivez-nous directement à ${email}.`, true);
+      } finally {
+        btn.disabled = false;
+      }
+    });
+  }
+</script>

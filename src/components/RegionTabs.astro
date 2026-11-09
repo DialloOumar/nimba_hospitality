@@ -1,0 +1,225 @@
+---
+import Photo from './Photo.astro';
+import Icon from './Icon.astro';
+import { REGIONS, destinationsIn } from '../data/destinations';
+import { url } from '../lib/url';
+---
+
+<div class="regions" data-tabs>
+  <div class="regions-tabs" role="tablist" aria-label="Régions naturelles de Guinée">
+    {
+      REGIONS.map((r, i) => (
+        <button
+          type="button"
+          role="tab"
+          id={`tab-${r.id}`}
+          aria-controls={`panel-${r.id}`}
+          aria-selected={i === 0 ? 'true' : 'false'}
+          tabindex={i === 0 ? 0 : -1}
+          class="regions-tab"
+        >
+          <span class="regions-tab-num">0{i + 1}</span>
+          <span class="regions-tab-name">{r.name}</span>
+        </button>
+      ))
+    }
+  </div>
+
+  {
+    REGIONS.map((r, i) => (
+      <div
+        class="regions-panel"
+        role="tabpanel"
+        id={`panel-${r.id}`}
+        aria-labelledby={`tab-${r.id}`}
+        data-panel
+        data-active={i === 0 ? 'true' : 'false'}
+      >
+        <Photo k={r.photo} alt={r.name} sizes="(min-width: 900px) 55vw, 100vw" class="regions-media" />
+        <div class="regions-copy">
+          <span class="regions-subtitle">{r.subtitle}</span>
+          <h3 class="h2">{r.name}</h3>
+          <p>{r.description}</p>
+          <ul class="regions-list">
+            {destinationsIn(r.id).map((d) => (
+              <li>
+                <a href={url(`/destinations/${d.slug}`)}>
+                  <span>{d.name}</span>
+                  <Icon name="arrow" />
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    ))
+  }
+</div>
+
+<style>
+  .regions-tabs {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+    margin-bottom: clamp(36px, 5vw, 64px);
+  }
+  .regions-tab {
+    position: relative;
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    padding: 0 8px 22px 0;
+    background: none;
+    border: 0;
+    text-align: left;
+    color: rgba(255, 255, 255, 0.5);
+    transition: color 0.35s;
+  }
+  .regions-tab::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    height: 2px;
+    background: var(--gold);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.5s var(--ease);
+  }
+  .regions-tab[aria-selected='true'] {
+    color: var(--white);
+  }
+  .regions-tab[aria-selected='true']::after {
+    transform: scaleX(1);
+  }
+  .regions-tab:hover {
+    color: var(--white);
+  }
+  .regions-tab-num {
+    font-family: var(--serif);
+    color: var(--gold-300);
+    font-size: 1rem;
+  }
+  .regions-tab-name {
+    font-family: var(--serif);
+    font-size: clamp(1.2rem, 2vw, 1.7rem);
+    line-height: 1.1;
+  }
+
+  .regions-panel {
+    display: grid;
+    gap: clamp(32px, 5vw, 80px);
+  }
+  :global(.js) .regions-panel[data-active='false'] {
+    display: none;
+  }
+  .regions-panel + .regions-panel {
+    margin-top: 64px;
+  }
+  :global(.js) .regions-panel + .regions-panel {
+    margin-top: 0;
+  }
+  .regions-panel[data-active='true'] {
+    animation: panel-in 0.8s var(--ease-out);
+  }
+  @keyframes panel-in {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+  }
+  .regions-panel :global(.regions-media) {
+    aspect-ratio: 16 / 11;
+  }
+  .regions-subtitle {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: var(--gold-300);
+    margin-bottom: 14px;
+  }
+  .regions-copy p {
+    margin: 22px 0 30px;
+    max-width: 46ch;
+  }
+  .regions-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.14);
+  }
+  .regions-list a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 16px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+    font-family: var(--serif);
+    font-size: 1.35rem;
+    color: var(--white);
+    transition:
+      color 0.3s,
+      padding 0.4s var(--ease);
+  }
+  .regions-list a :global(svg) {
+    width: 18px;
+    height: 18px;
+    color: var(--gold);
+    flex: none;
+    transition: transform 0.4s var(--ease);
+  }
+  .regions-list a:hover {
+    color: var(--gold-300);
+    padding-left: 8px;
+  }
+  .regions-list a:hover :global(svg) {
+    transform: translateX(4px);
+  }
+
+  @media (min-width: 900px) {
+    .regions-panel {
+      grid-template-columns: 7fr 5fr;
+      align-items: center;
+    }
+  }
+  @media (max-width: 700px) {
+    .regions-tabs {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0 16px;
+      border-bottom: 0;
+    }
+    .regions-tab {
+      padding: 14px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+    }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-tabs]').forEach((root) => {
+    const tabs = [...root.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
+    const panels = [...root.querySelectorAll<HTMLElement>('[data-panel]')];
+    const select = (i: number, focus = false) => {
+      tabs.forEach((t, j) => {
+        t.setAttribute('aria-selected', String(i === j));
+        t.tabIndex = i === j ? 0 : -1;
+      });
+      panels.forEach((p, j) => (p.dataset.active = String(i === j)));
+      if (focus) tabs[i].focus();
+    };
+    tabs.forEach((t, i) => {
+      t.addEventListener('click', () => select(i));
+      t.addEventListener('keydown', (e) => {
+        const k = e.key;
+        if (k === 'ArrowRight' || k === 'ArrowLeft') {
+          e.preventDefault();
+          select((i + (k === 'ArrowRight' ? 1 : -1) + tabs.length) % tabs.length, true);
+        }
+      });
+    });
+  });
+</script>

@@ -1,0 +1,67 @@
+---
+// Responsive photo with optional on-image credit (required by CC BY / CC BY-SA licences).
+import { Picture } from 'astro:assets';
+import { photo, credit as getCredit } from '../lib/photos';
+
+interface Props {
+  k: string;
+  alt: string;
+  sizes?: string;
+  widths?: number[];
+  eager?: boolean;
+  credit?: boolean;
+  class?: string;
+  imgClass?: string;
+}
+
+const {
+  k,
+  alt,
+  sizes = '100vw',
+  widths = [480, 800, 1200, 1600, 2200],
+  eager = false,
+  credit = true,
+  class: cls = '',
+  imgClass = '',
+} = Astro.props;
+
+const img = photo(k);
+const c = getCredit(k);
+const MAX = 2400;
+const usable = widths.filter((w) => w <= img.width && w <= MAX);
+const top = Math.min(img.width, MAX);
+if (!usable.includes(top) && top > (usable.at(-1) ?? 0)) usable.push(top);
+// Size of the <img> fallback (browsers without srcset/webp support) — keep it reasonable.
+const fallbackWidth = Math.min(img.width, 1600);
+---
+
+<div class:list={['media', cls]}>
+  <Picture
+    src={img}
+    alt={alt}
+    widths={usable}
+    width={fallbackWidth}
+    sizes={sizes}
+    formats={['webp']}
+    fallbackFormat="jpg"
+    quality={74}
+    loading={eager ? 'eager' : 'lazy'}
+    fetchpriority={eager ? 'high' : 'auto'}
+    decoding="async"
+    class={imgClass}
+  />
+  {
+    credit && c && (
+      <span class="credit">
+        <a href={c.page} target="_blank" rel="noopener">
+          © {c.artist}
+        </a>{' '}
+        ·{' '}
+        <a href={c.licenseUrl} target="_blank" rel="noopener license">
+          {c.license}
+        </a>
+      </span>
+    )
+  }
+  <slot />
+</div>

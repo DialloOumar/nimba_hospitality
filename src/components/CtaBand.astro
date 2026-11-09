@@ -1,0 +1,78 @@
+---
+import Photo from './Photo.astro';
+import Icon from './Icon.astro';
+import { SITE } from '../config';
+import { url } from '../lib/url';
+
+interface Props {
+  photo?: string;
+}
+const { photo = 'sunset' } = Astro.props;
+---
+
+<section class="cta on-dark">
+  <Photo k={photo} alt="Coucher de soleil sur la côte guinéenne" class="cta-media" />
+  <div class="cta-shade" aria-hidden="true"></div>
+  <div class="container cta-inner">
+    <span class="eyebrow" data-reveal>Contact</span>
+    <h2 class="h1" data-reveal style="--delay:.08s">Commençons par <em>nous rencontrer.</em></h2>
+    <p data-reveal style="--delay:.16s">
+      Porteur d'un projet hôtelier, investisseur, institution ou simple voyageur curieux de la Guinée : notre équipe vous
+      répond personnellement.
+    </p>
+    <div class="cta-actions" data-reveal style="--delay:.24s">
+      <a href={url('/contact')} class="btn">Échanger avec notre équipe <Icon name="arrow" /></a>
+      <a href={`mailto:${SITE.email}`} class="btn btn--ghost">{SITE.email}</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta {
+    position: relative;
+    padding: clamp(112px, 15vw, 200px) 0;
+    overflow: hidden;
+    text-align: center;
+    background: var(--green-900);
+  }
+  .cta :global(.cta-media) {
+    position: absolute;
+    inset: 0;
+  }
+  .cta-shade {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, rgba(7, 31, 20, 0.55), rgba(7, 31, 20, 0.88));
+  }
+  .cta-inner {
+    position: relative;
+    display: grid;
+    justify-items: center;
+  }
+  .cta .eyebrow::after {
+    content: '';
+    width: 36px;
+    height: 1px;
+    background: currentColor;
+  }
+  .cta h2 {
+    max-width: 14ch;
+  }
+  .cta p {
+    max-width: 560px;
+    margin: 28px auto 40px;
+    font-size: 1.05rem;
+  }
+  .cta-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 14px;
+  }
+  @media (max-width: 520px) {
+    .cta-actions .btn {
+      width: 100%;
+      white-space: normal;
+    }
+  }
+</style>

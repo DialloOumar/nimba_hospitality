@@ -1,0 +1,327 @@
+---
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+import { NAV, SITE } from '../config';
+import { url, isActive } from '../lib/url';
+
+interface Props {
+  solid?: boolean;
+}
+const { solid = false } = Astro.props;
+const path = Astro.url.pathname;
+---
+
+<header class:list={['site-header', { 'is-solid': solid, 'force-solid': solid }]} data-header>
+  <div class="container header-inner">
+    <a href={url('/')} class="brand" aria-label={`${SITE.name} — accueil`}>
+      <Logo class="brand-full" />
+      <Logo variant="mono" class="brand-mono" />
+    </a>
+
+    <nav class="nav" aria-label="Navigation principale">
+      <ul>
+        {
+          NAV.map((item) => (
+            <li>
+              <a href={url(item.href)} aria-current={isActive(path, url(item.href)) ? 'page' : undefined}>
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <a href={url('/contact')} class="btn header-cta">
+      Parlons de votre projet
+    </a>
+
+    <button class="burger" type="button" aria-expanded="false" aria-controls="mobile-menu" data-menu-toggle>
+      <span class="visually-hidden">Menu</span>
+      <span class="burger-lines" aria-hidden="true"><span></span><span></span></span>
+    </button>
+  </div>
+
+  <div class="mobile-menu" id="mobile-menu" data-menu hidden>
+    <div class="container mobile-inner">
+      <nav aria-label="Navigation mobile">
+        <ul>
+          <li><a href={url('/')}>Accueil</a></li>
+          {
+            NAV.map((item) => (
+              <li>
+                <a href={url(item.href)}>{item.label}</a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+      <div class="mobile-foot">
+        <a href={`mailto:${SITE.email}`}><Icon name="mail" /> {SITE.email}</a>
+        <span><Icon name="pin" /> Conakry, Guinée</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    --logo-a: var(--white);
+    position: fixed;
+    inset: 0 0 auto;
+    z-index: 100;
+    height: var(--header-h);
+    color: var(--white);
+    transition:
+      background 0.45s var(--ease),
+      box-shadow 0.45s var(--ease),
+      height 0.45s var(--ease),
+      color 0.45s var(--ease);
+  }
+  .site-header::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 -40px;
+    background: linear-gradient(to bottom, rgba(7, 31, 20, 0.55), transparent);
+    pointer-events: none;
+    transition: opacity 0.45s var(--ease);
+  }
+  .site-header.is-solid {
+    --logo-a: var(--green-800);
+    --header-h: 72px;
+    background: rgba(250, 247, 241, 0.94);
+    backdrop-filter: saturate(140%) blur(14px);
+    -webkit-backdrop-filter: saturate(140%) blur(14px);
+    box-shadow: 0 1px 0 var(--line);
+    color: var(--green-900);
+  }
+  .site-header.is-solid::before {
+    opacity: 0;
+  }
+
+  .header-inner {
+    position: relative;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    gap: 32px;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    height: 46px;
+    flex-shrink: 0;
+    transition: height 0.45s var(--ease);
+  }
+  .is-solid .brand {
+    height: 40px;
+  }
+  .brand :global(.brand-mono) {
+    display: none;
+  }
+
+  .nav {
+    margin-left: auto;
+  }
+  .nav ul {
+    display: flex;
+    gap: 36px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .nav a {
+    position: relative;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 8px 0;
+  }
+  .nav a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 1px;
+    background: var(--gold);
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.45s var(--ease);
+  }
+  .nav a:hover::after,
+  .nav a[aria-current='page']::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+  .header-cta {
+    min-height: 46px;
+    padding: 0 22px;
+  }
+
+  .burger {
+    display: none;
+    margin-left: auto;
+    width: 48px;
+    height: 48px;
+    border: 0;
+    background: none;
+    padding: 0;
+    position: relative;
+    z-index: 2;
+  }
+  .burger-lines {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-content: center;
+    gap: 7px;
+  }
+  .burger-lines span {
+    display: block;
+    width: 28px;
+    height: 1.5px;
+    background: currentColor;
+    transition: transform 0.4s var(--ease);
+  }
+  .burger[aria-expanded='true'] .burger-lines span:first-child {
+    transform: translateY(4.25px) rotate(45deg);
+  }
+  .burger[aria-expanded='true'] .burger-lines span:last-child {
+    transform: translateY(-4.25px) rotate(-45deg);
+  }
+
+  .mobile-menu {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    background: var(--green-950);
+    color: var(--white);
+    display: flex;
+    align-items: flex-end;
+    padding-bottom: 48px;
+    opacity: 0;
+    transition: opacity 0.4s var(--ease);
+  }
+  .mobile-menu.is-open {
+    opacity: 1;
+  }
+  .mobile-inner {
+    width: min(100% - 2 * var(--gutter), var(--container));
+  }
+  .mobile-menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 48px;
+  }
+  .mobile-menu li a {
+    display: block;
+    font-family: var(--serif);
+    font-size: clamp(2.4rem, 10vw, 3.6rem);
+    line-height: 1.2;
+    padding: 4px 0;
+  }
+  .mobile-menu li a:hover {
+    color: var(--gold-300);
+    font-style: italic;
+  }
+  .mobile-foot {
+    display: grid;
+    gap: 12px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.7);
+  }
+  .mobile-foot > * {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .mobile-foot :global(svg) {
+    width: 18px;
+    height: 18px;
+    color: var(--gold);
+  }
+
+  /* Menu open: keep the header bar light-on-dark over the overlay */
+  :global(html.menu-open) .site-header {
+    --logo-a: var(--white);
+    background: transparent;
+    box-shadow: none;
+    color: var(--white);
+    backdrop-filter: none;
+  }
+  :global(html.menu-open) {
+    overflow: hidden;
+  }
+
+  @media (max-width: 1100px) {
+    .nav ul {
+      gap: 24px;
+    }
+    .header-cta {
+      display: none;
+    }
+  }
+  @media (max-width: 860px) {
+    .nav {
+      display: none;
+    }
+    .burger {
+      display: block;
+    }
+    .brand {
+      position: relative;
+      z-index: 2;
+      height: 38px;
+    }
+  }
+  @media (max-width: 420px) {
+    .brand :global(.brand-full) {
+      display: none;
+    }
+    .brand :global(.brand-mono) {
+      display: block;
+    }
+  }
+</style>
+
+<script>
+  const header = document.querySelector<HTMLElement>('[data-header]')!;
+  const toggle = document.querySelector<HTMLButtonElement>('[data-menu-toggle]')!;
+  const menu = document.querySelector<HTMLElement>('[data-menu]')!;
+  const forceSolid = header.classList.contains('force-solid');
+
+  const onScroll = () => {
+    if (forceSolid) return;
+    header.classList.toggle('is-solid', window.scrollY > 40);
+  };
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  const setOpen = (open: boolean) => {
+    toggle.setAttribute('aria-expanded', String(open));
+    document.documentElement.classList.toggle('menu-open', open);
+    if (open) {
+      menu.hidden = false;
+      requestAnimationFrame(() => menu.classList.add('is-open'));
+    } else {
+      menu.classList.remove('is-open');
+      setTimeout(() => {
+        if (toggle.getAttribute('aria-expanded') === 'false') menu.hidden = true;
+      }, 400);
+    }
+  };
+  toggle.addEventListener('click', () => setOpen(toggle.getAttribute('aria-expanded') !== 'true'));
+  menu.addEventListener('click', (e) => {
+    if ((e.target as HTMLElement).closest('a')) setOpen(false);
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') {
+      setOpen(false);
+      toggle.focus();
+    }
+  });
+</script>

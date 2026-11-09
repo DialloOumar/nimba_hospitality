@@ -1,0 +1,65 @@
+---
+// Inline, path-based NHG logo. Colours come from CSS custom properties:
+//   --logo-a (green parts / wordmark)  and  --logo-b (gold parts)
+import logo from '../data/logo.json';
+
+interface Props {
+  variant?: 'full' | 'mono';
+  tagline?: boolean;
+  class?: string;
+}
+const { variant = 'full', tagline = false, class: cls = '' } = Astro.props;
+const { mono, word } = logo;
+const r = (n: number) => Math.round(n * 100) / 100;
+
+const wordH = tagline ? word.h : word.linesBottom - word.y;
+const s = wordH / mono.h;
+const mw = mono.w * s;
+const gap = wordH * 0.2;
+const divX = mw + gap;
+const wordX = divX + gap;
+const W = wordX + word.w;
+---
+
+{
+  variant === 'mono' ? (
+    <svg class:list={['logo', cls]} viewBox={`${mono.x} ${mono.y} ${mono.w} ${mono.h}`} aria-hidden="true" focusable="false">
+      <path class="lg-a" d={mono.n} />
+      <path class="lg-b" d={mono.hh} />
+      <path class="lg-a" d={mono.g} />
+      <path class="lg-b" d={mono.swoosh} />
+    </svg>
+  ) : (
+    <svg class:list={['logo', cls]} viewBox={`0 0 ${r(W)} ${r(wordH)}`} aria-hidden="true" focusable="false">
+      <g transform={`scale(${r(s * 1000) / 1000}) translate(${-mono.x} ${-mono.y})`}>
+        <path class="lg-a" d={mono.n} />
+        <path class="lg-b" d={mono.hh} />
+        <path class="lg-a" d={mono.g} />
+        <path class="lg-b" d={mono.swoosh} />
+      </g>
+      <rect class="lg-b" x={r(divX - wordH * 0.012)} y={r(wordH * 0.02)} width={r(wordH * 0.024)} height={r(wordH * 0.96)} />
+      <g transform={`translate(${r(wordX - word.x)} ${-word.y})`}>
+        <path class="lg-a" d={word.lines} />
+        {tagline && <path class="lg-b" d={word.tag} />}
+        {tagline &&
+          word.rules.map((l) => (
+            <rect class="lg-b" x={l.x1} y={r(l.y - word.ruleW / 2)} width={r(l.x2 - l.x1)} height={word.ruleW} />
+          ))}
+      </g>
+    </svg>
+  )
+}
+
+<style>
+  .logo {
+    height: 100%;
+    width: auto;
+  }
+  .lg-a {
+    fill: var(--logo-a, var(--green-800));
+    transition: fill 0.4s var(--ease);
+  }
+  .lg-b {
+    fill: var(--logo-b, var(--gold));
+  }
+</style>

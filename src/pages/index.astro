@@ -1,0 +1,452 @@
+---
+import Base from '../layouts/Base.astro';
+import HeroSlider from '../components/HeroSlider.astro';
+import Photo from '../components/Photo.astro';
+import Icon from '../components/Icon.astro';
+import DestinationCard from '../components/DestinationCard.astro';
+import RegionTabs from '../components/RegionTabs.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { DESTINATIONS } from '../data/destinations';
+import { url } from '../lib/url';
+
+const expertises = [
+  {
+    n: '01',
+    title: 'Développement hôtelier',
+    text: "Concevoir des lieux qui répondent aux attentes des voyageurs d'aujourd'hui et aux ambitions de la Guinée, de l'étude de faisabilité jusqu'à l'ouverture.",
+    photo: 'loos',
+    alt: 'Établissements en bord de mer aux îles de Loos',
+  },
+  {
+    n: '02',
+    title: 'Gestion & hospitalité',
+    text: "Une attention constante à chaque étape du séjour : qualité de service, formation des équipes et cohérence de l'expérience.",
+    photo: 'fouta-plateau',
+    alt: 'Paysage verdoyant du Fouta-Djalon',
+  },
+  {
+    n: '03',
+    title: 'Restauration & art de vivre',
+    text: 'Des tables généreuses, inspirées des produits et des saveurs de Guinée, ouvertes sur les cuisines du monde.',
+    photo: 'marche',
+    alt: 'Produits frais sur un marché guinéen',
+  },
+];
+
+const featured = DESTINATIONS.filter((d) => d.featured);
+const mosaic = [
+  featured.find((d) => d.slug === 'monts-nimba')!,
+  featured.find((d) => d.slug === 'iles-de-loos')!,
+  featured.find((d) => d.slug === 'chutes-de-kambadaga')!,
+  featured.find((d) => d.slug === 'dame-de-mali')!,
+  featured.find((d) => d.slug === 'chimpanzes-de-bossou')!,
+];
+
+const stats = [
+  { value: '1 752', unit: 'm', label: 'Mont Nimba, point culminant de la Guinée' },
+  { value: '≈ 300', unit: 'km', label: 'de côtes sur l’océan Atlantique' },
+  { value: '4', unit: '', label: 'régions naturelles aux paysages contrastés' },
+  { value: '1981', unit: '', label: 'Nimba inscrit au patrimoine mondial de l’UNESCO' },
+];
+
+const steps = [
+  { t: 'Écouter', d: 'Comprendre un territoire, un site, une ambition et les personnes qui la portent.' },
+  { t: 'Concevoir', d: 'Définir un concept juste : positionnement, programme, expérience et modèle économique.' },
+  { t: 'Opérer', d: 'Recruter, former et animer les équipes ; installer des standards de service exigeants.' },
+  { t: 'Faire rayonner', d: 'Commercialiser, fidéliser et faire de chaque lieu une ambassade de la Guinée.' },
+];
+---
+
+<Base>
+  <HeroSlider />
+
+  <!-- 01 · Le groupe -->
+  <section class="section intro" id="groupe">
+    <div class="container">
+      <div class="split split--5-7">
+        <div>
+          <span class="eyebrow" data-reveal><span class="num">01</span> Le groupe</span>
+          <h2 class="h2" data-reveal style="--delay:.08s">Faire de chaque séjour <em>une histoire</em> à part.</h2>
+        </div>
+        <div class="intro-copy">
+          <p class="lead" data-reveal>
+            Nimba Hospitality Group imagine une hospitalité chaleureuse, exigeante et profondément liée à son territoire.
+          </p>
+          <p data-reveal style="--delay:.08s">
+            Basé à Conakry, le groupe développe une approche intégrée de l'hospitalité — de la conception des lieux à
+            l'accompagnement des équipes qui les font vivre — avec une ambition claire : contribuer à faire rayonner la
+            destination Guinée, ses paysages, ses saveurs et le sens de l'accueil de ses habitants.
+          </p>
+          <a href={url('/groupe')} class="link-arrow" data-reveal style="--delay:.16s">Notre approche <Icon name="arrow" /></a>
+        </div>
+      </div>
+
+      <dl class="stats">
+        {
+          stats.map((s, i) => (
+            <div class="stat" data-reveal style={`--delay:${i * 0.08}s`}>
+              <dt>
+                {s.value}
+                {s.unit && <small>{s.unit}</small>}
+              </dt>
+              <dd>{s.label}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+  </section>
+
+  <!-- 02 · Expertises -->
+  <section class="section section--green on-dark expertises" id="expertises">
+    <div class="container">
+      <div class="section-head section-head--row">
+        <div>
+          <span class="eyebrow" data-reveal><span class="num">02</span> Nos expertises</span>
+          <h2 class="h2" data-reveal style="--delay:.08s">Le sens de <em>l'accueil</em>, dans chacun de nos métiers.</h2>
+        </div>
+        <p data-reveal style="--delay:.16s">
+          Des métiers complémentaires, réunis par une même exigence : créer des expériences mémorables, durables et
+          justes pour la Guinée.
+        </p>
+      </div>
+
+      <div class="exp-grid">
+        {
+          expertises.map((e, i) => (
+            <a href={url('/expertises') + `#${['developpement', 'gestion', 'restauration'][i]}`} class="exp-card" data-reveal style={`--delay:${i * 0.1}s`}>
+              <Photo k={e.photo} alt={e.alt} sizes="(min-width: 900px) 33vw, 100vw" widths={[480, 800, 1200]} class="exp-media media--zoom" credit={false} />
+              <div class="exp-body">
+                <span class="exp-num">{e.n}</span>
+                <h3 class="h3">{e.title}</h3>
+                <p>{e.text}</p>
+                <span class="link-arrow">En savoir plus <Icon name="arrow" /></span>
+              </div>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 · Destinations -->
+  <section class="section destinations" id="destinations">
+    <div class="container">
+      <div class="section-head section-head--row">
+        <div>
+          <span class="eyebrow" data-reveal><span class="num">03</span> À découvrir en Guinée</span>
+          <h2 class="h2" data-reveal style="--delay:.08s">Des lieux qui <em>invitent</em> au voyage.</h2>
+        </div>
+        <div data-reveal style="--delay:.16s">
+          <p>
+            Des îles de l'Atlantique aux cimes du Nimba, des cascades du Fouta-Djalon aux forêts du sud : la Guinée offre
+            une diversité de paysages rare en Afrique de l'Ouest.
+          </p>
+          <a href={url('/destinations')} class="link-arrow">Toutes les destinations <Icon name="arrow" /></a>
+        </div>
+      </div>
+
+      <div class="mosaic">
+        {
+          mosaic.map((d, i) => (
+            <div class:list={['mosaic-item', `mosaic-item--${i + 1}`]} data-reveal style={`--delay:${(i % 3) * 0.08}s`}>
+              <DestinationCard d={d} ratio={i === 0 ? '4 / 5' : i < 3 ? '4 / 3' : '16 / 10'} sizes="(min-width: 900px) 50vw, 100vw" />
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Régions -->
+  <section class="section section--green on-dark">
+    <div class="container">
+      <div class="section-head section-head--row">
+        <div>
+          <span class="eyebrow" data-reveal>Quatre Guinée en une</span>
+          <h2 class="h2" data-reveal style="--delay:.08s">Un pays, <em>quatre</em> paysages.</h2>
+        </div>
+        <p data-reveal style="--delay:.16s">
+          Littoral, plateaux, savanes et forêts : chaque région naturelle a son climat, ses peuples et ses trésors. Une
+          richesse que nous mettons au cœur de chaque projet.
+        </p>
+      </div>
+      <div data-reveal>
+        <RegionTabs />
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 · Ancrage -->
+  <section class="anchor on-dark" id="ancrage">
+    <Photo k="nimba" alt="Prairies d'altitude des monts Nimba" class="anchor-media" />
+    <div class="anchor-shade" aria-hidden="true"></div>
+    <div class="container anchor-inner">
+      <span class="eyebrow" data-reveal><span class="num">04</span> Notre ancrage</span>
+      <h2 class="h1" data-reveal style="--delay:.08s">La Guinée comme <em>point de départ.</em></h2>
+      <div class="anchor-text" data-reveal style="--delay:.16s">
+        <p class="lead">
+          Nous avons choisi le nom du plus haut sommet de Guinée : une promesse d'exigence, et un hommage à la terre qui
+          nous inspire.
+        </p>
+        <p>
+          Nous croyons en une destination généreuse, vivante et singulière. C'est cette conviction que nous portons dans
+          chaque projet et chaque rencontre.
+        </p>
+        <a href={url('/destinations/monts-nimba')} class="link-arrow">Découvrir les monts Nimba <Icon name="arrow" /></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Approche -->
+  <section class="section approach">
+    <div class="container">
+      <div class="section-head section-head--row">
+        <div>
+          <span class="eyebrow" data-reveal>Notre méthode</span>
+          <h2 class="h2" data-reveal style="--delay:.08s">De l'idée à <em>l'accueil</em> du premier hôte.</h2>
+        </div>
+        <p data-reveal style="--delay:.16s">
+          Une démarche intégrée, pensée pour les porteurs de projets, investisseurs et institutions qui veulent bâtir une
+          hospitalité durable en Guinée.
+        </p>
+      </div>
+      <ol class="steps">
+        {
+          steps.map((s, i) => (
+            <li class="step" data-reveal style={`--delay:${i * 0.08}s`}>
+              <span class="step-num">0{i + 1}</span>
+              <h3 class="h3">{s.t}</h3>
+              <p>{s.d}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <CtaBand />
+</Base>
+
+<style>
+  /* Intro */
+  .intro-copy {
+    padding-top: 8px;
+  }
+  .intro-copy .lead {
+    margin-bottom: 28px;
+  }
+  .intro-copy .link-arrow {
+    margin-top: 16px;
+  }
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    margin: clamp(72px, 9vw, 128px) 0 0;
+    border-top: 1px solid var(--line);
+  }
+  .stat {
+    padding: 36px 28px 0 0;
+  }
+  .stat + .stat {
+    padding-left: 28px;
+    border-left: 1px solid var(--line);
+  }
+  .stat dt {
+    font-family: var(--serif);
+    font-size: clamp(2.6rem, 4.6vw, 4.2rem);
+    line-height: 1;
+    color: var(--green-800);
+    white-space: nowrap;
+  }
+  .stat dt small {
+    font-size: 0.45em;
+    margin-left: 6px;
+    color: var(--gold-600);
+  }
+  .stat dd {
+    margin: 14px 0 0;
+    font-size: 0.85rem;
+    line-height: 1.55;
+    color: var(--muted);
+    max-width: 24ch;
+  }
+  @media (max-width: 800px) {
+    .stats {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .stat + .stat:nth-child(3) {
+      border-left: 0;
+      padding-left: 0;
+    }
+    .stat {
+      padding-right: 16px;
+    }
+    .stat + .stat {
+      padding-left: 16px;
+    }
+    .stat dt {
+      font-size: 2.3rem;
+    }
+  }
+
+  /* Expertises */
+  .exp-grid {
+    display: grid;
+    gap: clamp(20px, 2.5vw, 36px);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .exp-card {
+    display: flex;
+    flex-direction: column;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition:
+      background 0.5s var(--ease),
+      border-color 0.5s var(--ease);
+  }
+  .exp-card:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(194, 155, 87, 0.5);
+  }
+  .exp-card :global(.exp-media) {
+    aspect-ratio: 4 / 3;
+  }
+  .exp-body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: clamp(24px, 3vw, 40px);
+  }
+  .exp-num {
+    font-family: var(--serif);
+    font-size: 1.1rem;
+    color: var(--gold-300);
+    margin-bottom: 14px;
+  }
+  .exp-body p {
+    margin: 16px 0 28px;
+    flex: 1;
+  }
+  .exp-body .link-arrow {
+    align-self: flex-start;
+  }
+  @media (max-width: 900px) {
+    .exp-grid {
+      grid-template-columns: 1fr;
+    }
+    .exp-card :global(.exp-media) {
+      aspect-ratio: 16 / 9;
+    }
+  }
+
+  /* Mosaic */
+  .mosaic {
+    display: grid;
+    gap: clamp(14px, 1.6vw, 24px);
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+  .mosaic-item--1 {
+    grid-column: span 3;
+    grid-row: span 2;
+  }
+  .mosaic-item--2,
+  .mosaic-item--3 {
+    grid-column: span 3;
+  }
+  .mosaic-item--4,
+  .mosaic-item--5 {
+    grid-column: span 3;
+  }
+  .mosaic-item--1 :global(.dcard) {
+    height: 100%;
+    aspect-ratio: auto;
+    min-height: 520px;
+  }
+  @media (max-width: 900px) {
+    .mosaic {
+      grid-template-columns: 1fr;
+    }
+    .mosaic-item {
+      grid-column: auto !important;
+      grid-row: auto !important;
+    }
+    .mosaic-item--1 :global(.dcard) {
+      min-height: 0;
+      aspect-ratio: 4 / 5;
+    }
+    .mosaic-item :global(.dcard) {
+      aspect-ratio: 4 / 3.4;
+    }
+  }
+
+  /* Anchor */
+  .anchor {
+    position: relative;
+    padding: clamp(140px, 20vw, 260px) 0 clamp(80px, 10vw, 140px);
+    overflow: hidden;
+    background: var(--green-950);
+  }
+  .anchor :global(.anchor-media) {
+    position: absolute;
+    inset: 0;
+  }
+  .anchor-shade {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(to top, rgba(7, 31, 20, 0.92), rgba(7, 31, 20, 0.2) 70%),
+      linear-gradient(90deg, rgba(7, 31, 20, 0.6), transparent 70%);
+  }
+  .anchor-inner {
+    position: relative;
+  }
+  .anchor h2 {
+    max-width: 12ch;
+  }
+  .anchor-text {
+    max-width: 560px;
+    margin-top: 36px;
+  }
+  .anchor-text .lead {
+    margin-bottom: 20px;
+  }
+  .anchor-text .link-arrow {
+    margin-top: 20px;
+  }
+
+  /* Steps */
+  .steps {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: clamp(24px, 3vw, 48px);
+  }
+  .step {
+    padding-top: 28px;
+    border-top: 1px solid var(--green-800);
+  }
+  .step-num {
+    display: block;
+    font-family: var(--serif);
+    font-size: 1.1rem;
+    color: var(--gold-600);
+    margin-bottom: 22px;
+  }
+  .step p {
+    margin-top: 14px;
+    font-size: 0.95rem;
+  }
+  @media (max-width: 900px) {
+    .steps {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 560px) {
+    .steps {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

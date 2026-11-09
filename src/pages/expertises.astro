@@ -1,0 +1,223 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Photo from '../components/Photo.astro';
+import Icon from '../components/Icon.astro';
+import CtaBand from '../components/CtaBand.astro';
+
+const areas = [
+  {
+    id: 'developpement',
+    n: '01',
+    title: 'Développement hôtelier',
+    intro:
+      "Nous accompagnons propriétaires fonciers, investisseurs et institutions dans la conception de projets hôteliers viables, désirables et adaptés au marché guinéen.",
+    services: [
+      'Études de marché et de faisabilité',
+      'Positionnement, concept et programmation',
+      'Accompagnement architectural et design intérieur',
+      'Recherche de partenaires et d’enseignes',
+      'Préparation de l’ouverture (pre-opening)',
+    ],
+    photo: 'loos',
+    alt: 'Établissements au bord de l’eau aux îles de Loos',
+  },
+  {
+    id: 'gestion',
+    n: '02',
+    title: 'Gestion & hospitalité',
+    intro:
+      "Nous prenons en charge l'exploitation d'établissements ou accompagnons les équipes en place pour élever la qualité de service et la performance.",
+    services: [
+      'Gestion déléguée et assistance technique',
+      'Recrutement et formation des équipes',
+      'Standards de service et contrôle qualité',
+      'Commercialisation, distribution et revenue management',
+      'Expérience client et fidélisation',
+    ],
+    photo: 'fouta-plateau',
+    alt: 'Paysage des plateaux du Fouta-Djalon',
+  },
+  {
+    id: 'restauration',
+    n: '03',
+    title: 'Restauration & art de vivre',
+    intro:
+      'Nous créons des tables et des expériences qui célèbrent les produits et les saveurs de la Guinée, avec un regard ouvert sur les cuisines du monde.',
+    services: [
+      'Concepts de restaurants, bars et lounges',
+      'Cartes inspirées du terroir guinéen',
+      'Filières d’approvisionnement locales',
+      'Événements, réceptions et séminaires',
+      'Bien-être et art de vivre',
+    ],
+    photo: 'marche',
+    alt: 'Produits frais sur un marché guinéen',
+  },
+];
+
+const audiences = [
+  {
+    t: 'Investisseurs & propriétaires',
+    d: "Valoriser un foncier, sécuriser un investissement, choisir le bon concept et le bon partenaire d'exploitation.",
+  },
+  {
+    t: 'Institutions & collectivités',
+    d: 'Structurer une offre touristique, accompagner la mise en valeur de sites naturels et culturels.',
+  },
+  {
+    t: 'Entreprises & voyageurs',
+    d: 'Séjours, séminaires, événements : des expériences sur mesure, de Conakry aux régions.',
+  },
+];
+---
+
+<Base
+  title="Expertises"
+  description="Développement hôtelier, gestion & hospitalité, restauration & art de vivre : les expertises de Nimba Hospitality Group en Guinée."
+  ogPhoto="kassa"
+>
+  <PageHero photo="kassa" alt="Plage bordée de palmiers sur l'île de Kassa" eyebrow="Nos expertises">
+    Le sens de <em>l'accueil.</em>
+    <p slot="intro">
+      Trois métiers complémentaires, une même exigence : créer des expériences mémorables et durables, au service de la
+      destination Guinée.
+    </p>
+  </PageHero>
+
+  {
+    areas.map((a, i) => (
+      <section class:list={['section area', { 'section--sand': i % 2 === 1 }]} id={a.id}>
+        <div class="container">
+          <div class:list={['split split--center', { 'area--reverse': i % 2 === 1 }]}>
+            <div class="area-visual" data-reveal>
+              <Photo k={a.photo} alt={a.alt} sizes="(min-width: 900px) 50vw, 100vw" class="area-media" />
+              <span class="area-big" aria-hidden="true">
+                {a.n}
+              </span>
+            </div>
+            <div>
+              <span class="eyebrow" data-reveal>
+                <span class="num">{a.n}</span> Expertise
+              </span>
+              <h2 class="h2" data-reveal style="--delay:.08s">
+                {a.title}
+              </h2>
+              <p class="lead area-intro" data-reveal style="--delay:.12s">
+                {a.intro}
+              </p>
+              <ul class="area-list" data-reveal style="--delay:.16s">
+                {a.services.map((s) => (
+                  <li>
+                    <Icon name="check" />
+                    {s}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+    ))
+  }
+
+  <section class="section section--green on-dark">
+    <div class="container">
+      <div class="section-head section-head--row">
+        <div>
+          <span class="eyebrow" data-reveal>Pour qui</span>
+          <h2 class="h2" data-reveal style="--delay:.08s">Des partenaires <em>engagés</em> à vos côtés.</h2>
+        </div>
+        <p data-reveal style="--delay:.16s">
+          Chaque collaboration commence par une écoute attentive de vos objectifs, de votre site et de vos contraintes.
+        </p>
+      </div>
+      <div class="aud-grid">
+        {
+          audiences.map((a, i) => (
+            <div class="aud" data-reveal style={`--delay:${i * 0.08}s`}>
+              <span class="aud-num">0{i + 1}</span>
+              <h3 class="h3">{a.t}</h3>
+              <p>{a.d}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <CtaBand photo="voile-mariee" />
+</Base>
+
+<style>
+  .area-visual {
+    position: relative;
+  }
+  .area-visual :global(.area-media) {
+    aspect-ratio: 5 / 4;
+  }
+  .area-big {
+    position: absolute;
+    left: -0.08em;
+    bottom: -0.36em;
+    font-family: var(--serif);
+    font-size: clamp(6rem, 13vw, 11rem);
+    line-height: 1;
+    color: var(--gold);
+    opacity: 0.9;
+    pointer-events: none;
+  }
+  @media (min-width: 900px) {
+    .area--reverse > :first-child {
+      order: 2;
+    }
+  }
+  .area-intro {
+    margin: 26px 0 32px;
+  }
+  .area-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--line);
+  }
+  .area-list li {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--line);
+    font-size: 0.95rem;
+    color: var(--ink);
+  }
+  .area-list :global(svg) {
+    width: 18px;
+    height: 18px;
+    flex: none;
+    color: var(--gold-600);
+  }
+
+  .aud-grid {
+    display: grid;
+    gap: clamp(20px, 2.5vw, 36px);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .aud {
+    padding: clamp(28px, 3vw, 44px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+  }
+  .aud-num {
+    display: block;
+    font-family: var(--serif);
+    color: var(--gold-300);
+    margin-bottom: 20px;
+  }
+  .aud p {
+    margin-top: 14px;
+  }
+  @media (max-width: 900px) {
+    .aud-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

@@ -1,0 +1,237 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Photo from '../components/Photo.astro';
+import Icon from '../components/Icon.astro';
+import Logo from '../components/Logo.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { url } from '../lib/url';
+
+const values = [
+  {
+    t: 'Exigence',
+    d: "Des standards internationaux, appliqués avec rigueur à chaque détail : de l'accueil au service, de la literie à l'assiette.",
+  },
+  {
+    t: 'Authenticité',
+    d: "Des lieux qui racontent la Guinée : ses matières, ses savoir-faire, ses produits et ses paysages, plutôt qu'un luxe sans adresse.",
+  },
+  {
+    t: 'Générosité',
+    d: "L'hospitalité guinéenne est une culture. Nous la cultivons comme notre premier atout : chaleur, attention, sens du partage.",
+  },
+  {
+    t: 'Engagement local',
+    d: 'Former et promouvoir les talents guinéens, travailler avec les producteurs et artisans locaux, respecter les sites et les communautés.',
+  },
+];
+---
+
+<Base
+  title="Le groupe"
+  description="Nimba Hospitality Group : un groupe hôtelier guinéen basé à Conakry, porteur d'une hospitalité chaleureuse, exigeante et ancrée dans son territoire."
+  ogPhoto="fouta"
+>
+  <PageHero photo="fouta" alt="Vallée verdoyante du Fouta-Djalon" eyebrow="Le groupe">
+    Une hospitalité <em>à visage humain.</em>
+    <p slot="intro">
+      Nimba Hospitality Group est né d'une conviction : la Guinée mérite des lieux d'accueil à la hauteur de ses paysages et
+      de la générosité de ses habitants.
+    </p>
+  </PageHero>
+
+  <section class="section">
+    <div class="container">
+      <div class="split split--5-7">
+        <div>
+          <span class="eyebrow" data-reveal>Manifeste</span>
+          <h2 class="h2" data-reveal style="--delay:.08s">Faire de chaque séjour une <em>histoire</em> à part.</h2>
+        </div>
+        <div>
+          <p class="lead" data-reveal>
+            Nous imaginons une hospitalité qui ne ressemble à aucune autre : enracinée dans un territoire, attentive à
+            chaque personne, exigeante dans chaque détail.
+          </p>
+          <p data-reveal style="--delay:.08s">
+            Basé à Conakry, notre groupe réunit des métiers complémentaires — développement hôtelier, gestion
+            d'établissements, restauration et art de vivre — au service d'une même ambition : contribuer à faire de la
+            Guinée une destination de référence en Afrique de l'Ouest.
+          </p>
+          <p data-reveal style="--delay:.12s">
+            Nous accompagnons les porteurs de projets, investisseurs et institutions de l'idée à l'ouverture, puis dans
+            l'exploitation au quotidien, avec une approche intégrée qui garantit la cohérence de l'expérience proposée
+            aux hôtes.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--sand name">
+    <div class="container">
+      <div class="split split--center">
+        <div class="name-visual" data-reveal>
+          <Photo k="nimba" alt="Prairies d'altitude des monts Nimba" sizes="(min-width: 900px) 50vw, 100vw" class="name-media" />
+          <div class="name-badge">
+            <Logo variant="mono" />
+          </div>
+        </div>
+        <div>
+          <span class="eyebrow" data-reveal>Notre nom</span>
+          <h2 class="h2" data-reveal style="--delay:.08s">Nimba, <em>le sommet</em> de la Guinée.</h2>
+          <p data-reveal style="--delay:.12s">
+            Le mont Nimba culmine à 1 752 mètres : c'est le point le plus haut du pays. Sa réserve naturelle, inscrite au
+            patrimoine mondial de l'UNESCO, abrite une biodiversité que l'on ne trouve nulle part ailleurs.
+          </p>
+          <p data-reveal style="--delay:.16s">
+            En choisissant ce nom, nous nous sommes donné un cap : viser le plus haut niveau d'exigence, tout en
+            préservant ce qui fait la singularité et la fragilité de notre territoire.
+          </p>
+          <a href={url('/destinations/monts-nimba')} class="link-arrow" data-reveal style="--delay:.2s">
+            Découvrir les monts Nimba <Icon name="arrow" />
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head section-head--row">
+        <div>
+          <span class="eyebrow" data-reveal>Nos valeurs</span>
+          <h2 class="h2" data-reveal style="--delay:.08s">Ce qui nous <em>guide.</em></h2>
+        </div>
+        <p data-reveal style="--delay:.16s">
+          Quatre principes qui orientent chacune de nos décisions, du choix d'un site au geste d'accueil d'un membre de nos
+          équipes.
+        </p>
+      </div>
+      <ol class="values">
+        {
+          values.map((v, i) => (
+            <li class="value" data-reveal style={`--delay:${i * 0.08}s`}>
+              <span class="value-num">0{i + 1}</span>
+              <h3 class="h3">{v.t}</h3>
+              <p>{v.d}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="section section--green on-dark vision">
+    <div class="container--narrow">
+      <span class="eyebrow" data-reveal>Notre vision</span>
+      <blockquote data-reveal style="--delay:.08s">
+        <p>
+          « Faire de la Guinée une destination où l'on vient pour ses paysages, et où l'on revient pour la qualité de son
+          accueil. »
+        </p>
+      </blockquote>
+      <hr class="rule-gold" data-reveal style="--delay:.16s" />
+    </div>
+  </section>
+
+  <CtaBand photo="kassa" />
+</Base>
+
+<style>
+  .name-visual {
+    position: relative;
+  }
+  .name-visual :global(.name-media) {
+    aspect-ratio: 4 / 5;
+  }
+  .name-badge {
+    position: absolute;
+    right: clamp(-28px, -2vw, -12px);
+    bottom: clamp(-28px, -2vw, -12px);
+    width: clamp(120px, 14vw, 180px);
+    aspect-ratio: 1;
+    display: grid;
+    place-items: center;
+    padding: 26px;
+    background: var(--ivory);
+    box-shadow: 0 20px 50px rgba(7, 31, 20, 0.18);
+  }
+  .name-badge :global(svg) {
+    width: 100%;
+    height: auto;
+  }
+  .name-visual :global(.credit) {
+    left: 10px;
+    right: auto;
+    max-width: 60%;
+  }
+  .name .link-arrow {
+    margin-top: 12px;
+  }
+  @media (max-width: 899px) {
+    .name-badge {
+      right: 12px;
+      bottom: 12px;
+    }
+  }
+
+  .values {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    border-top: 1px solid var(--line);
+  }
+  .value {
+    padding: clamp(28px, 4vw, 52px) clamp(0px, 3vw, 48px) clamp(28px, 4vw, 52px) 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .value:nth-child(even) {
+    padding-left: clamp(20px, 3vw, 48px);
+    border-left: 1px solid var(--line);
+  }
+  .value-num {
+    display: block;
+    font-family: var(--serif);
+    color: var(--gold-600);
+    font-size: 1.1rem;
+    margin-bottom: 18px;
+  }
+  .value p {
+    margin-top: 14px;
+    max-width: 46ch;
+  }
+  @media (max-width: 700px) {
+    .values {
+      grid-template-columns: 1fr;
+    }
+    .value:nth-child(even) {
+      padding-left: 0;
+      border-left: 0;
+    }
+  }
+
+  .vision {
+    text-align: center;
+  }
+  .vision .eyebrow::after {
+    content: '';
+    width: 36px;
+    height: 1px;
+    background: currentColor;
+  }
+  .vision blockquote {
+    margin: 0 0 40px;
+  }
+  .vision blockquote p {
+    font-family: var(--serif);
+    font-size: clamp(1.9rem, 3.8vw, 3.2rem);
+    line-height: 1.2;
+    color: var(--white);
+    font-style: italic;
+  }
+  .vision .rule-gold {
+    margin-inline: auto;
+  }
+</style>

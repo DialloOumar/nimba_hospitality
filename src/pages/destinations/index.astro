@@ -1,0 +1,233 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import DestinationCard from '../../components/DestinationCard.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { DESTINATIONS, REGIONS } from '../../data/destinations';
+import { url } from '../../lib/url';
+---
+
+<Base
+  title="Destinations en Guinée"
+  description="Îles de Loos, monts Nimba, chutes de Kambadaga, Dame de Mali, chimpanzés de Bossou… les plus beaux sites touristiques de Guinée, région par région."
+  ogPhoto="kambadaga"
+>
+  <PageHero photo="kambadaga" alt="Les chutes de Kambadaga vues à travers les arbres" eyebrow="La Guinée" size="tall">
+    Des lieux qui <em>invitent</em> au voyage.
+    <p slot="intro">
+      Littoral et îles, plateaux du Fouta-Djalon, savanes du Niger, forêts et montagnes du sud : un pays aux mille visages,
+      encore préservé du tourisme de masse.
+    </p>
+  </PageHero>
+
+  <section class="section">
+    <div class="container">
+      <div class="filters" role="group" aria-label="Filtrer par région" data-filters>
+        <button type="button" class="chip" aria-pressed="true" data-filter="all">
+          Toutes <span>{DESTINATIONS.length}</span>
+        </button>
+        {
+          REGIONS.map((r) => (
+            <button type="button" class="chip" aria-pressed="false" data-filter={r.id}>
+              {r.name} <span>{DESTINATIONS.filter((d) => d.region === r.id).length}</span>
+            </button>
+          ))
+        }
+      </div>
+
+      <p class="filters-status visually-hidden" aria-live="polite" data-status></p>
+
+      <ul class="grid" data-grid>
+        {
+          DESTINATIONS.map((d, i) => (
+            <li data-region={d.region} data-reveal style={`--delay:${(i % 3) * 0.06}s`}>
+              <DestinationCard d={d} />
+            </li>
+          ))
+        }
+      </ul>
+
+      <p class="note">
+        Informations indicatives. Les conditions d'accès et les temps de trajet varient selon la saison et l'état des routes :
+        renseignez-vous localement avant votre départ. Photographies sous licences Creative Commons —
+        <a href={url('/credits')}>voir les crédits</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="section section--sand regions-overview">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow" data-reveal>Les quatre régions naturelles</span>
+        <h2 class="h2" data-reveal style="--delay:.08s">Comprendre la <em>Guinée.</em></h2>
+      </div>
+      <div class="ro-grid">
+        {
+          REGIONS.map((r, i) => (
+            <article class="ro" data-reveal style={`--delay:${i * 0.08}s`}>
+              <span class="ro-num">0{i + 1}</span>
+              <h3 class="h3">{r.name}</h3>
+              <span class="ro-sub">{r.subtitle}</span>
+              <p>{r.description}</p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <CtaBand photo="haut-niger" />
+</Base>
+
+<style>
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: clamp(36px, 5vw, 56px);
+  }
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 44px;
+    padding: 0 20px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: transparent;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--green-800);
+    transition:
+      background 0.3s,
+      color 0.3s,
+      border-color 0.3s;
+  }
+  .chip span {
+    font-family: var(--serif);
+    font-size: 0.95rem;
+    letter-spacing: 0;
+    color: var(--gold-600);
+  }
+  .chip:hover {
+    border-color: var(--green-800);
+  }
+  .chip[aria-pressed='true'] {
+    background: var(--green-800);
+    border-color: var(--green-800);
+    color: var(--white);
+  }
+  .chip[aria-pressed='true'] span {
+    color: var(--gold-300);
+  }
+
+  .grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: clamp(14px, 1.6vw, 24px);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .grid li[hidden] {
+    display: none;
+  }
+  /* Feature the first card across two columns so 14 cards fill the 3-column grid evenly */
+  @media (min-width: 1001px) {
+    .grid:not(.is-filtered) li:first-child {
+      grid-column: span 2;
+    }
+    .grid:not(.is-filtered) li:first-child :global(.dcard) {
+      aspect-ratio: auto;
+      height: 100%;
+    }
+  }
+  @media (max-width: 1000px) {
+    .grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 620px) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  .note {
+    margin-top: 40px;
+    font-size: 0.82rem;
+    max-width: 760px;
+  }
+  .note a {
+    color: var(--green-800);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .ro-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: clamp(20px, 3vw, 40px);
+  }
+  .ro {
+    border-top: 1px solid var(--green-800);
+    padding-top: 26px;
+  }
+  .ro-num {
+    display: block;
+    font-family: var(--serif);
+    color: var(--gold-600);
+    margin-bottom: 16px;
+  }
+  .ro-sub {
+    display: block;
+    margin: 8px 0 14px;
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold-600);
+  }
+  .ro p {
+    font-size: 0.92rem;
+  }
+  @media (max-width: 1000px) {
+    .ro-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 560px) {
+    .ro-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<script>
+  const wrap = document.querySelector<HTMLElement>('[data-filters]');
+  const grid = document.querySelector<HTMLElement>('[data-grid]');
+  const status = document.querySelector<HTMLElement>('[data-status]');
+  if (wrap && grid && status) {
+    const chips = [...wrap.querySelectorAll<HTMLButtonElement>('[data-filter]')];
+    const items = [...grid.querySelectorAll<HTMLElement>('li[data-region]')];
+    const apply = (f: string) => {
+      let n = 0;
+      grid.classList.toggle('is-filtered', f !== 'all');
+      chips.forEach((c) => c.setAttribute('aria-pressed', String(c.dataset.filter === f)));
+      items.forEach((it) => {
+        const show = f === 'all' || it.dataset.region === f;
+        it.hidden = !show;
+        if (show) {
+          n++;
+          it.classList.add('is-in');
+        }
+      });
+      status.textContent = `${n} destination${n > 1 ? 's' : ''} affichée${n > 1 ? 's' : ''}`;
+      if (history.replaceState) history.replaceState(null, '', f === 'all' ? location.pathname : `#${f}`);
+    };
+    chips.forEach((c) => c.addEventListener('click', () => apply(c.dataset.filter!)));
+    const initial = location.hash.slice(1);
+    if (chips.some((c) => c.dataset.filter === initial)) apply(initial);
+  }
+</script>

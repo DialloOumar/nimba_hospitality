@@ -1,0 +1,363 @@
+---
+import Photo from './Photo.astro';
+import Icon from './Icon.astro';
+import { url } from '../lib/url';
+
+const slides = [
+  { k: 'hero-nimba', place: 'Monts Nimba', region: 'Guinée Forestière', slug: 'monts-nimba' },
+  { k: 'fouta', place: 'Plateaux du Fouta-Djalon', region: 'Moyenne-Guinée', slug: 'fouta-djalon' },
+  { k: 'kassa', place: 'Îles de Loos', region: 'Guinée Maritime', slug: 'iles-de-loos' },
+  { k: 'kambadaga', place: 'Chutes de Kambadaga', region: 'Pita, Fouta-Djalon', slug: 'chutes-de-kambadaga' },
+];
+const pad = (n: number) => String(n).padStart(2, '0');
+---
+
+<section class="hero on-dark" data-hero aria-roledescription="carrousel" aria-label="Paysages de Guinée">
+  <div class="hero-slides">
+    {
+      slides.map((s, i) => (
+        <div class:list={['hero-slide', { 'is-active': i === 0 }]} data-slide aria-hidden={i === 0 ? 'false' : 'true'}>
+          <Photo k={s.k} alt={`${s.place} — ${s.region}`} eager={i === 0} />
+        </div>
+      ))
+    }
+  </div>
+  <div class="hero-shade" aria-hidden="true"></div>
+
+  <div class="container hero-content">
+    <span class="eyebrow hero-in" style="--d:.2s">L'hospitalité au sommet · Conakry, Guinée</span>
+    <h1 class="display hero-title">
+      <span class="line"><span class="hero-in" style="--d:.35s">L'art de vous</span></span>
+      <span class="line"><em class="hero-in" style="--d:.5s">recevoir.</em></span>
+    </h1>
+    <p class="hero-sub hero-in" style="--d:.7s">
+      Une nouvelle vision de l'hospitalité, enracinée en Guinée et ouverte sur le monde : nous concevons, gérons et faisons
+      vivre des lieux d'exception.
+    </p>
+    <div class="hero-actions hero-in" style="--d:.85s">
+      <a href={url('/groupe')} class="btn">Découvrir Nimba <Icon name="arrow" /></a>
+      <a href={url('/destinations')} class="btn btn--ghost">Explorer la Guinée</a>
+    </div>
+  </div>
+
+  <div class="container hero-bottom">
+    <ol class="hero-nav" aria-label="Choisir une diapositive">
+      {
+        slides.map((s, i) => (
+          <li>
+            <button type="button" class:list={['hero-dot', { 'is-active': i === 0 }]} data-goto={i} aria-label={`${s.place}`}>
+              <span class="hero-dot-num">{pad(i + 1)}</span>
+              <span class="hero-dot-label">
+                <strong>{s.place}</strong>
+                <span>{s.region}</span>
+              </span>
+              <span class="hero-dot-bar" aria-hidden="true">
+                <span />
+              </span>
+            </button>
+          </li>
+        ))
+      }
+    </ol>
+    <a href={url(`/destinations/${slides[0].slug}`)} class="hero-current" data-current-link>
+      <span data-current-count>01 / {pad(slides.length)}</span>
+    </a>
+  </div>
+
+  <a href="#groupe" class="hero-scroll" aria-label="Défiler vers le contenu">
+    <span></span>
+  </a>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    min-height: 100svh;
+    display: grid;
+    grid-template-rows: 1fr auto;
+    overflow: hidden;
+    background: var(--green-950);
+  }
+  .hero-slides,
+  .hero-slide {
+    position: absolute;
+    inset: 0;
+  }
+  .hero-slide {
+    opacity: 0;
+    transition: opacity 1.6s var(--ease);
+  }
+  .hero-slide.is-active {
+    opacity: 1;
+  }
+  .hero-slide :global(.media) {
+    height: 100%;
+    background: transparent;
+  }
+  .hero-slide :global(img) {
+    transform: scale(1.12);
+    transition: transform 9s linear;
+  }
+  .hero-slide.is-active :global(img) {
+    transform: scale(1);
+  }
+  .hero-slide :global(.credit) {
+    bottom: 12px;
+    opacity: 0.8;
+  }
+  .hero-shade {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(to top, rgba(7, 31, 20, 0.9) 0%, rgba(7, 31, 20, 0.25) 42%, rgba(7, 31, 20, 0.35) 100%),
+      linear-gradient(100deg, rgba(7, 31, 20, 0.7) 0%, rgba(7, 31, 20, 0) 62%);
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 1;
+    align-self: end;
+    padding-top: calc(var(--header-h) + 48px);
+    padding-bottom: clamp(40px, 6vh, 72px);
+  }
+  .hero-title {
+    color: var(--white);
+  }
+  .hero-title .line {
+    display: block;
+    overflow: hidden;
+    padding-bottom: 0.06em;
+  }
+  .hero-title .line > * {
+    display: inline-block;
+  }
+  .hero-title em {
+    color: var(--gold-300);
+    padding-right: 0.08em;
+  }
+  .hero-sub {
+    max-width: 520px;
+    margin: 32px 0 40px;
+    font-size: 1.05rem;
+    color: rgba(255, 255, 255, 0.82);
+  }
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+
+  /* entrance */
+  .hero-in {
+    animation: hero-rise 1.3s var(--ease-out) both;
+    animation-delay: var(--d, 0s);
+  }
+  .hero-title .hero-in {
+    animation-name: hero-line;
+  }
+  @keyframes hero-rise {
+    from {
+      opacity: 0;
+      transform: translateY(24px);
+    }
+  }
+  @keyframes hero-line {
+    from {
+      transform: translateY(105%);
+    }
+  }
+
+  .hero-bottom {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+    padding-bottom: 40px;
+    border-top: 1px solid rgba(255, 255, 255, 0.16);
+    padding-top: 22px;
+  }
+  .hero-nav {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 28px;
+    flex: 1;
+    max-width: 920px;
+  }
+  .hero-dot {
+    width: 100%;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 4px 12px;
+    text-align: left;
+    background: none;
+    border: 0;
+    padding: 0;
+    color: rgba(255, 255, 255, 0.55);
+    transition: color 0.4s;
+  }
+  .hero-dot:hover,
+  .hero-dot.is-active {
+    color: var(--white);
+  }
+  .hero-dot-num {
+    font-family: var(--serif);
+    font-size: 1.05rem;
+    line-height: 1.2;
+    color: var(--gold-300);
+  }
+  .hero-dot-label {
+    display: grid;
+    font-size: 0.78rem;
+    line-height: 1.4;
+  }
+  .hero-dot-label strong {
+    font-weight: 600;
+  }
+  .hero-dot-label span {
+    font-size: 0.7rem;
+    opacity: 0.75;
+  }
+  .hero-dot-bar {
+    grid-column: 1 / -1;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.2);
+    margin-top: 10px;
+    overflow: hidden;
+  }
+  .hero-dot-bar > span {
+    display: block;
+    height: 100%;
+    background: var(--gold);
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+  .hero-dot.is-active .hero-dot-bar > span {
+    animation: hero-progress var(--hero-interval, 7s) linear forwards;
+  }
+  .hero.is-paused .hero-dot.is-active .hero-dot-bar > span {
+    animation-play-state: paused;
+  }
+  @keyframes hero-progress {
+    to {
+      transform: scaleX(1);
+    }
+  }
+  .hero-current {
+    font-family: var(--serif);
+    font-size: 1.1rem;
+    letter-spacing: 0.08em;
+    color: rgba(255, 255, 255, 0.75);
+    white-space: nowrap;
+  }
+
+  .hero-scroll {
+    position: absolute;
+    right: var(--gutter);
+    top: 50%;
+    z-index: 1;
+    width: 1px;
+    height: 88px;
+    background: rgba(255, 255, 255, 0.25);
+    overflow: hidden;
+  }
+  .hero-scroll span {
+    position: absolute;
+    inset: 0;
+    background: var(--gold);
+    animation: scroll-cue 2.4s var(--ease) infinite;
+  }
+  @keyframes scroll-cue {
+    0% {
+      transform: translateY(-100%);
+    }
+    100% {
+      transform: translateY(100%);
+    }
+  }
+
+  @media (max-width: 900px) {
+    .hero-nav {
+      grid-template-columns: repeat(4, auto);
+      gap: 18px;
+    }
+    .hero-dot-label {
+      display: none;
+    }
+    .hero-dot {
+      min-width: 44px;
+      min-height: 44px;
+      align-content: end;
+    }
+    .hero-scroll {
+      display: none;
+    }
+  }
+  @media (max-width: 520px) {
+    .hero-actions .btn {
+      flex: 1 1 100%;
+    }
+  }
+</style>
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-hero]');
+  if (root) {
+    const slides = [...root.querySelectorAll<HTMLElement>('[data-slide]')];
+    const dots = [...root.querySelectorAll<HTMLButtonElement>('[data-goto]')];
+    const count = root.querySelector<HTMLElement>('[data-current-count]')!;
+    const link = root.querySelector<HTMLAnchorElement>('[data-current-link]')!;
+    const slugs = ['monts-nimba', 'fouta-djalon', 'iles-de-loos', 'chutes-de-kambadaga'];
+    const baseHref = link.getAttribute('href')!.replace(/[^/]+$/, '');
+    const INTERVAL = 7000;
+    root.style.setProperty('--hero-interval', `${INTERVAL / 1000}s`);
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const pad = (n: number) => String(n).padStart(2, '0');
+    let index = 0;
+    let timer: number | undefined;
+
+    const go = (i: number) => {
+      index = (i + slides.length) % slides.length;
+      slides.forEach((s, j) => {
+        s.classList.toggle('is-active', j === index);
+        s.setAttribute('aria-hidden', String(j !== index));
+      });
+      dots.forEach((d, j) => {
+        d.classList.remove('is-active');
+        if (j === index) {
+          void d.offsetWidth; // restart progress animation
+          d.classList.add('is-active');
+        }
+      });
+      count.textContent = `${pad(index + 1)} / ${pad(slides.length)}`;
+      link.href = baseHref + slugs[index];
+    };
+    const play = () => {
+      if (reduce) return;
+      window.clearInterval(timer);
+      timer = window.setInterval(() => go(index + 1), INTERVAL);
+    };
+
+    dots.forEach((d, i) =>
+      d.addEventListener('click', () => {
+        go(i);
+        play();
+      }),
+    );
+    root.addEventListener('mouseenter', () => {
+      root.classList.add('is-paused');
+      window.clearInterval(timer);
+    });
+    root.addEventListener('mouseleave', () => {
+      root.classList.remove('is-paused');
+      go(index); // restart the progress bar in sync with the timer
+      play();
+    });
+    document.addEventListener('visibilitychange', () => (document.hidden ? window.clearInterval(timer) : play()));
+    play();
+  }
+</script>

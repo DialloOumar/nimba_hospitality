@@ -1,0 +1,92 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import { allCredits } from '../lib/photos';
+
+const items = allCredits();
+---
+
+<Base title="Crédits photographiques" description="Crédits et licences des photographies utilisées sur le site de Nimba Hospitality Group." solidHeader>
+  <section class="section credits-page">
+    <div class="container--narrow">
+      <span class="eyebrow">Mentions</span>
+      <h1 class="h1">Crédits <em>photographiques</em></h1>
+      <p class="lead intro">
+        Les photographies de ce site proviennent de Wikimedia Commons et sont publiées sous licences libres Creative Commons.
+        Merci à leurs auteurs de partager la beauté de la Guinée.
+      </p>
+      <ul class="list">
+        {
+          items.map(({ image, credit }) => (
+            <li>
+              <Image src={image} alt="" width={160} height={110} fit="cover" format="webp" quality={60} class="thumb" />
+              <div>
+                <a href={credit.page} target="_blank" rel="noopener" class="title">
+                  {credit.title.replace(/^File:/, '').replace(/\.(jpe?g|png)$/i, '')}
+                </a>
+                <span>
+                  © {credit.artist} —{' '}
+                  <a href={credit.licenseUrl} target="_blank" rel="noopener license">
+                    {credit.license}
+                  </a>
+                </span>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="small">
+        Les images ont été redimensionnées et compressées pour le web. Les œuvres sous licence CC BY-SA restent
+        disponibles sous la même licence.
+      </p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .credits-page {
+    padding-top: calc(72px + clamp(64px, 8vw, 112px));
+  }
+  .intro {
+    margin: 28px 0 48px;
+  }
+  .list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--line);
+  }
+  .list li {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .list :global(.thumb) {
+    width: 96px;
+    height: 66px;
+    object-fit: cover;
+    flex: none;
+  }
+  .list div {
+    display: grid;
+    gap: 2px;
+    font-size: 0.88rem;
+    color: var(--muted);
+    min-width: 0;
+  }
+  .title {
+    font-family: var(--serif);
+    font-size: 1.2rem;
+    color: var(--green-900);
+    overflow-wrap: anywhere;
+  }
+  .list a:hover {
+    text-decoration: underline;
+  }
+  .small {
+    margin-top: 32px;
+    font-size: 0.8rem;
+  }
+</style>

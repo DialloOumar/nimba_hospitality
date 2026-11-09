@@ -1,0 +1,80 @@
+---
+// Full-bleed photographic hero used at the top of inner pages.
+import Photo from './Photo.astro';
+
+interface Props {
+  photo: string;
+  alt: string;
+  eyebrow: string;
+  size?: 'tall' | 'medium';
+}
+const { photo, alt, eyebrow, size = 'medium' } = Astro.props;
+---
+
+<section class:list={['page-hero on-dark', `page-hero--${size}`]}>
+  <Photo k={photo} alt={alt} eager class="page-hero-media" />
+  <div class="page-hero-shade" aria-hidden="true"></div>
+  <div class="container page-hero-content">
+    <span class="eyebrow" data-reveal>{eyebrow}</span>
+    <h1 class="h1" data-reveal style="--delay:.1s"><slot /></h1>
+    {
+      Astro.slots.has('intro') && (
+        <div class="page-hero-intro" data-reveal style="--delay:.2s">
+          <slot name="intro" />
+        </div>
+      )
+    }
+  </div>
+</section>
+
+<style>
+  .page-hero {
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    min-height: min(78svh, 760px);
+    padding: calc(var(--header-h) + 64px) 0 clamp(56px, 8vw, 104px);
+    overflow: hidden;
+    background: var(--green-900);
+  }
+  .page-hero--tall {
+    min-height: 92svh;
+  }
+  .page-hero :global(.page-hero-media) {
+    position: absolute;
+    inset: 0;
+  }
+  .page-hero :global(.page-hero-media img) {
+    animation: hero-zoom 14s var(--ease-out) both;
+  }
+  @keyframes hero-zoom {
+    from {
+      transform: scale(1.08);
+    }
+    to {
+      transform: scale(1);
+    }
+  }
+  .page-hero-shade {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(to top, rgba(7, 31, 20, 0.88) 0%, rgba(7, 31, 20, 0.35) 45%, rgba(7, 31, 20, 0.2) 100%),
+      linear-gradient(to right, rgba(7, 31, 20, 0.45), transparent 60%);
+  }
+  .page-hero-content {
+    position: relative;
+    z-index: 1;
+  }
+  .page-hero h1 {
+    max-width: 15ch;
+  }
+  .page-hero-intro {
+    max-width: 560px;
+    margin-top: 28px;
+    font-size: 1.05rem;
+  }
+  .page-hero-intro :global(p) {
+    color: rgba(255, 255, 255, 0.82);
+  }
+</style>
