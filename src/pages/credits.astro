@@ -12,8 +12,9 @@ const items = allCredits();
       <span class="eyebrow">Mentions</span>
       <h1 class="h1">Crédits <em>photographiques</em></h1>
       <p class="lead intro">
-        Les photographies de ce site proviennent de Wikimedia Commons et sont publiées sous licences libres Creative Commons.
-        Merci à leurs auteurs de partager la beauté de la Guinée.
+        Les photographies de ce site proviennent de Wikimedia Commons, publiées sous licences libres Creative Commons, et de
+        l'Office National du Tourisme de Guinée, qui nous a autorisés à les utiliser. Merci à leurs auteurs de partager la
+        beauté de la Guinée.
       </p>
       <ul class="list">
         {
@@ -26,9 +27,13 @@ const items = allCredits();
                 </a>
                 <span>
                   © {credit.artist} —{' '}
-                  <a href={credit.licenseUrl} target="_blank" rel="noopener license">
-                    {credit.license}
-                  </a>
+                  {credit.licenseUrl ? (
+                    <a href={credit.licenseUrl} target="_blank" rel="noopener license">
+                      {credit.license}
+                    </a>
+                  ) : (
+                    credit.license
+                  )}
                 </span>
               </div>
             </li>

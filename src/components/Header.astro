@@ -42,6 +42,8 @@ const path = Astro.url.pathname;
     </button>
   </div>
 
+  <span class="progress" aria-hidden="true"><span data-progress></span></span>
+
   <div class="mobile-menu" id="mobile-menu" data-menu hidden>
     <div class="container mobile-inner">
       <nav aria-label="Navigation mobile">
@@ -76,7 +78,26 @@ const path = Astro.url.pathname;
       background 0.45s var(--ease),
       box-shadow 0.45s var(--ease),
       height 0.45s var(--ease),
-      color 0.45s var(--ease);
+      color 0.45s var(--ease),
+      transform 0.5s var(--ease);
+  }
+  .site-header.is-hidden {
+    transform: translateY(-100%);
+  }
+  .progress {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 2px;
+    pointer-events: none;
+  }
+  .progress span {
+    display: block;
+    height: 100%;
+    background: var(--gold);
+    transform: scaleX(0);
+    transform-origin: left;
   }
   .site-header::before {
     content: '';
@@ -294,14 +315,38 @@ const path = Astro.url.pathname;
   const menu = document.querySelector<HTMLElement>('[data-menu]')!;
   const forceSolid = header.classList.contains('force-solid');
 
+  const progress = header.querySelector<HTMLElement>('[data-progress]')!;
+  let lastY = window.scrollY;
+  let ticking = false;
+
   const onScroll = () => {
-    if (forceSolid) return;
-    header.classList.toggle('is-solid', window.scrollY > 40);
+    const y = window.scrollY;
+    if (!forceSolid) header.classList.toggle('is-solid', y > 40);
+    // Hide while scrolling down, reveal as soon as the visitor scrolls up.
+    const menuOpen = document.documentElement.classList.contains('menu-open');
+    if (!menuOpen && Math.abs(y - lastY) > 6) {
+      header.classList.toggle('is-hidden', y > lastY && y > 480);
+      lastY = y;
+    }
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    progress.style.transform = `scaleX(${max > 0 ? Math.min(1, y / max) : 0})`;
+    ticking = false;
   };
   onScroll();
-  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener(
+    'scroll',
+    () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(onScroll);
+      }
+    },
+    { passive: true },
+  );
+  header.addEventListener('focusin', () => header.classList.remove('is-hidden'));
 
   const setOpen = (open: boolean) => {
+    header.classList.remove('is-hidden');
     toggle.setAttribute('aria-expanded', String(open));
     document.documentElement.classList.toggle('menu-open', open);
     if (open) {

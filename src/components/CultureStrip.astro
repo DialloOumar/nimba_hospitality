@@ -1,0 +1,145 @@
+---
+// "Culture vivante" — continuously scrolling strip of photographs.
+import { Picture } from 'astro:assets';
+import { photo, credit } from '../lib/photos';
+
+interface Props {
+  title?: string;
+  light?: boolean;
+}
+const { title = 'Culture vivante', light = false } = Astro.props;
+
+const shots = [
+  { k: 'ont-cauris', caption: 'Parure en cauris' },
+  { k: 'ont-pirogue', caption: 'Pirogue aux couleurs nationales' },
+  { k: 'ont-anciens', caption: 'La sagesse des anciens' },
+  { k: 'ont-pont-lianes', caption: 'Pont de lianes, Guinée forestière' },
+  { k: 'ont-masque', caption: 'Masque traditionnel, Guinée forestière' },
+  { k: 'ont-course-pirogues', caption: 'Course de pirogues' },
+  { k: 'ont-village-forestier', caption: 'Village de Guinée forestière' },
+  { k: 'ont-conakry-soir', caption: 'Conakry au crépuscule' },
+].map((s) => ({ ...s, img: photo(s.k), credit: credit(s.k) }));
+
+const credits = [...new Set(shots.map((s) => s.credit?.artist).filter(Boolean))];
+---
+
+<section class:list={['culture', light ? 'culture--light' : 'on-dark']} aria-labelledby="culture-title">
+  <div class="container culture-head">
+    <div>
+      <span class="eyebrow" data-reveal>Rencontres</span>
+      <h2 class="h2" id="culture-title" data-reveal style="--delay:.08s">
+        {title.split(' ')[0]} <em>{title.split(' ').slice(1).join(' ')}</em>
+      </h2>
+    </div>
+    <p data-reveal style="--delay:.16s">
+      Masques, parures, fêtes au fil de l'eau, savoir-faire ancestraux : la Guinée se découvre d'abord à travers celles et
+      ceux qui la font vivre.
+    </p>
+  </div>
+
+  <div class="marquee culture-marquee" style="--marquee-speed: 70s">
+    {
+      [0, 1].map((copy) => (
+        <ul class="marquee-track" aria-hidden={copy === 1 ? 'true' : undefined}>
+          {shots.map((s, i) => (
+            <li class:list={['shot', { 'shot--low': i % 2 === 1 }]}>
+              <figure>
+                <div class="shot-frame">
+                  <Picture
+                    src={s.img}
+                    alt={copy === 1 ? '' : s.caption}
+                    widths={[400, Math.min(s.img.width, 640)]}
+                    sizes="(min-width: 700px) 440px, 300px"
+                    formats={['webp']}
+                    fallbackFormat="jpg"
+                    quality={80}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </div>
+                <figcaption>{s.caption}</figcaption>
+              </figure>
+            </li>
+          ))}
+        </ul>
+      ))
+    }
+  </div>
+
+  <p class="container culture-credit">Photographies © {credits.join(', ')}</p>
+</section>
+
+<style>
+  .culture {
+    background: var(--green-950);
+    padding: clamp(84px, 11vw, 150px) 0 clamp(56px, 7vw, 96px);
+    overflow: hidden;
+  }
+  .culture-head {
+    display: grid;
+    gap: 24px;
+    margin-bottom: clamp(44px, 6vw, 80px);
+  }
+  @media (min-width: 900px) {
+    .culture-head {
+      grid-template-columns: 1.1fr 0.9fr;
+      align-items: end;
+      gap: 64px;
+    }
+  }
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    align-items: flex-start;
+  }
+  .shot {
+    padding: 0 clamp(10px, 1.2vw, 16px);
+  }
+  .shot--low {
+    padding-top: clamp(28px, 4vw, 56px);
+  }
+  figure {
+    margin: 0;
+  }
+  .shot-frame {
+    width: clamp(240px, 30vw, 420px);
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background: var(--green-800);
+  }
+  .shot-frame :global(picture),
+  .shot-frame :global(img) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition:
+      transform 1.2s var(--ease-out),
+      filter 0.6s var(--ease);
+  }
+  .shot:hover .shot-frame :global(img) {
+    transform: scale(1.06);
+  }
+  figcaption {
+    margin-top: 14px;
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.78);
+  }
+  .culture--light {
+    background: var(--sand);
+  }
+  .culture--light figcaption {
+    color: var(--green-800);
+  }
+  .culture--light .culture-credit {
+    color: var(--muted);
+  }
+  .culture-credit {
+    margin-top: 36px;
+    font-size: 0.72rem;
+    color: rgba(255, 255, 255, 0.45);
+  }
+</style>

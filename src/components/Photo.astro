@@ -1,5 +1,6 @@
 ---
-// Responsive photo with optional on-image credit (required by CC BY / CC BY-SA licences).
+// Responsive photo with optional on-image credit (required by CC BY / CC BY-SA licences),
+// optional scroll parallax and optional "wipe" reveal.
 import { Picture } from 'astro:assets';
 import { photo, credit as getCredit } from '../lib/photos';
 
@@ -12,6 +13,10 @@ interface Props {
   credit?: boolean;
   class?: string;
   imgClass?: string;
+  /** Parallax strength (0.05–0.15). The .media frame clips the overflow. */
+  parallax?: number;
+  /** Wipe the image into view when scrolled to. */
+  wipe?: boolean;
 }
 
 const {
@@ -23,6 +28,8 @@ const {
   credit = true,
   class: cls = '',
   imgClass = '',
+  parallax,
+  wipe = false,
 } = Astro.props;
 
 const img = photo(k);
@@ -35,31 +42,41 @@ if (!usable.includes(top) && top > (usable.at(-1) ?? 0)) usable.push(top);
 const fallbackWidth = Math.min(img.width, 1600);
 ---
 
-<div class:list={['media', cls]}>
-  <Picture
-    src={img}
-    alt={alt}
-    widths={usable}
-    width={fallbackWidth}
-    sizes={sizes}
-    formats={['webp']}
-    fallbackFormat="jpg"
-    quality={74}
-    loading={eager ? 'eager' : 'lazy'}
-    fetchpriority={eager ? 'high' : 'auto'}
-    decoding="async"
-    class={imgClass}
-  />
+<div class:list={['media', cls]} data-reveal-img={wipe ? '' : undefined}>
+  <div class:list={['media-layer', { 'media-layer--parallax': parallax }]} data-parallax={parallax}>
+    <Picture
+      src={img}
+      alt={alt}
+      widths={usable}
+      width={fallbackWidth}
+      sizes={sizes}
+      formats={['webp']}
+      fallbackFormat="jpg"
+      quality={74}
+      loading={eager ? 'eager' : 'lazy'}
+      fetchpriority={eager ? 'high' : 'auto'}
+      decoding="async"
+      class={imgClass}
+    />
+  </div>
   {
     credit && c && (
       <span class="credit">
-        <a href={c.page} target="_blank" rel="noopener">
-          © {c.artist}
-        </a>{' '}
-        ·{' '}
-        <a href={c.licenseUrl} target="_blank" rel="noopener license">
-          {c.license}
-        </a>
+        {c.page ? (
+          <a href={c.page} target="_blank" rel="noopener">
+            © {c.artist}
+          </a>
+        ) : (
+          <>© {c.artist}</>
+        )}
+        {c.licenseUrl && (
+          <>
+            {' · '}
+            <a href={c.licenseUrl} target="_blank" rel="noopener license">
+              {c.license}
+            </a>
+          </>
+        )}
       </span>
     )
   }

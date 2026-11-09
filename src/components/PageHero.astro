@@ -12,7 +12,7 @@ const { photo, alt, eyebrow, size = 'medium' } = Astro.props;
 ---
 
 <section class:list={['page-hero on-dark', `page-hero--${size}`]}>
-  <Photo k={photo} alt={alt} eager class="page-hero-media" />
+  <Photo k={photo} alt={alt} eager class="page-hero-media" parallax={0.08} />
   <div class="page-hero-shade" aria-hidden="true"></div>
   <div class="container page-hero-content">
     <span class="eyebrow" data-reveal>{eyebrow}</span>

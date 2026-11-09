@@ -99,6 +99,7 @@ export const DESTINATIONS: Destination[] = [
     kicker: 'La capitale',
     region: 'maritime',
     photo: 'mosquee-faycal',
+    gallery: ['ont-conakry-soir', 'ont-conakry-centre'],
     featured: true,
     excerpt: 'Une presqu’île vibrante entre océan, marchés animés et grands monuments.',
     lead:
@@ -392,6 +393,7 @@ export const DESTINATIONS: Destination[] = [
     kicker: 'Sur le Diani · Guinée Forestière',
     region: 'forestiere',
     photo: 'pont-lianes',
+    gallery: ['ont-pont-lianes', 'ont-village-forestier', 'ont-masque'],
     excerpt: 'Des passerelles tressées à la main, héritage d’un savoir-faire ancestral.',
     lead:
       "Dans les forêts du sud, des ponts suspendus faits de lianes tressées enjambent les rivières, comme sur le Diani. Ils sont l'œuvre de communautés qui se transmettent ce savoir-faire depuis des générations.",

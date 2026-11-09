@@ -6,6 +6,8 @@ import Icon from '../components/Icon.astro';
 import DestinationCard from '../components/DestinationCard.astro';
 import RegionTabs from '../components/RegionTabs.astro';
 import CtaBand from '../components/CtaBand.astro';
+import PlaceTicker from '../components/PlaceTicker.astro';
+import CultureStrip from '../components/CultureStrip.astro';
 import { DESTINATIONS } from '../data/destinations';
 import { url } from '../lib/url';
 
@@ -42,11 +44,12 @@ const mosaic = [
   featured.find((d) => d.slug === 'chimpanzes-de-bossou')!,
 ];
 
+// `value` is the final number (animated on scroll); `display` is what shows without JS.
 const stats = [
-  { value: '1 752', unit: 'm', label: 'Mont Nimba, point culminant de la Guinée' },
-  { value: '≈ 300', unit: 'km', label: 'de côtes sur l’océan Atlantique' },
-  { value: '4', unit: '', label: 'régions naturelles aux paysages contrastés' },
-  { value: '1981', unit: '', label: 'Nimba inscrit au patrimoine mondial de l’UNESCO' },
+  { value: 1752, display: '1 752', prefix: '', unit: 'm', label: 'Mont Nimba, point culminant de la Guinée' },
+  { value: 300, display: '300', prefix: '≈ ', unit: 'km', label: 'de côtes sur l’océan Atlantique' },
+  { value: 4, display: '4', prefix: '', unit: '', label: 'régions naturelles aux paysages contrastés' },
+  { value: 1981, display: '1981', prefix: '', unit: '', label: 'Nimba inscrit au patrimoine mondial de l’UNESCO', from: 1900, group: false },
 ];
 
 const steps = [
@@ -86,7 +89,10 @@ const steps = [
           stats.map((s, i) => (
             <div class="stat" data-reveal style={`--delay:${i * 0.08}s`}>
               <dt>
-                {s.value}
+                {s.prefix}
+                <span data-count={s.value} data-from={s.from} data-group={s.group === false ? 'false' : undefined}>
+                  {s.display}
+                </span>
                 {s.unit && <small>{s.unit}</small>}
               </dt>
               <dd>{s.label}</dd>
@@ -96,6 +102,8 @@ const steps = [
       </dl>
     </div>
   </section>
+
+  <PlaceTicker />
 
   <!-- 02 · Expertises -->
   <section class="section section--green on-dark expertises" id="expertises">
@@ -177,9 +185,11 @@ const steps = [
     </div>
   </section>
 
+  <CultureStrip light />
+
   <!-- 04 · Ancrage -->
   <section class="anchor on-dark" id="ancrage">
-    <Photo k="nimba" alt="Prairies d'altitude des monts Nimba" class="anchor-media" />
+    <Photo k="nimba" alt="Prairies d'altitude des monts Nimba" class="anchor-media" parallax={0.1} />
     <div class="anchor-shade" aria-hidden="true"></div>
     <div class="container anchor-inner">
       <span class="eyebrow" data-reveal><span class="num">04</span> Notre ancrage</span>

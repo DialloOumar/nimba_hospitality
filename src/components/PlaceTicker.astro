@@ -1,0 +1,85 @@
+---
+// Large, slowly scrolling band of destination names.
+import { DESTINATIONS } from '../data/destinations';
+import { url } from '../lib/url';
+
+interface Props {
+  dark?: boolean;
+}
+const { dark = false } = Astro.props;
+const items = DESTINATIONS.map((d) => ({ name: d.name, href: url(`/destinations/${d.slug}`) }));
+---
+
+<section class:list={['ticker', { 'ticker--dark': dark }]} aria-label="Nos destinations">
+  <div class="marquee" style="--marquee-speed: 80s">
+    {
+      [0, 1].map((copy) => (
+        <ul class="marquee-track" aria-hidden={copy === 1 ? 'true' : undefined}>
+          {items.map((it, i) => (
+            <li>
+              <a href={it.href} tabindex={copy === 1 ? -1 : undefined} class:list={{ outline: i % 2 === 1 }}>
+                {it.name}
+              </a>
+              <span class="star" aria-hidden="true">
+                ✦
+              </span>
+            </li>
+          ))}
+        </ul>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .ticker {
+    padding: clamp(28px, 4vw, 48px) 0;
+    border-block: 1px solid var(--line);
+    background: var(--ivory);
+  }
+  .ticker--dark {
+    background: var(--green-950);
+    border-color: rgba(255, 255, 255, 0.08);
+  }
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  li {
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+  }
+  a {
+    font-family: var(--serif);
+    font-size: clamp(2.4rem, 6vw, 5.2rem);
+    line-height: 1.1;
+    color: var(--green-800);
+    padding: 0 0.35em;
+    transition: color 0.4s var(--ease);
+  }
+  a.outline {
+    font-style: italic;
+    color: transparent;
+    -webkit-text-stroke: 1px var(--gold-600);
+  }
+  a:hover {
+    color: var(--gold-600);
+    -webkit-text-stroke-color: transparent;
+  }
+  .ticker--dark a {
+    color: var(--white);
+  }
+  .ticker--dark a.outline {
+    color: transparent;
+    -webkit-text-stroke-color: var(--gold-300);
+  }
+  .ticker--dark a:hover {
+    color: var(--gold-300);
+  }
+  .star {
+    color: var(--gold);
+    font-size: clamp(1rem, 2vw, 1.5rem);
+  }
+</style>

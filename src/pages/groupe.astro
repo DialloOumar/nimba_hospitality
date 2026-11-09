@@ -5,6 +5,7 @@ import Photo from '../components/Photo.astro';
 import Icon from '../components/Icon.astro';
 import Logo from '../components/Logo.astro';
 import CtaBand from '../components/CtaBand.astro';
+import CultureStrip from '../components/CultureStrip.astro';
 import { url } from '../lib/url';
 
 const values = [
@@ -71,7 +72,7 @@ const values = [
     <div class="container">
       <div class="split split--center">
         <div class="name-visual" data-reveal>
-          <Photo k="nimba" alt="Prairies d'altitude des monts Nimba" sizes="(min-width: 900px) 50vw, 100vw" class="name-media" />
+          <Photo k="nimba" alt="Prairies d'altitude des monts Nimba" sizes="(min-width: 900px) 50vw, 100vw" class="name-media" wipe />
           <div class="name-badge">
             <Logo variant="mono" />
           </div>
@@ -94,6 +95,8 @@ const values = [
       </div>
     </div>
   </section>
+
+  <CultureStrip />
 
   <section class="section">
     <div class="container">
