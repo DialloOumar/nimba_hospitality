@@ -10,10 +10,9 @@ Construit avec [Astro](https://astro.build) (site statique), déployé sur **Git
 | `/` | Accueil : diaporama, le groupe, expertises, destinations, 4 régions, ancrage, méthode, contact |
 | `/groupe` | Manifeste, origine du nom, valeurs, vision |
 | `/expertises` | Développement hôtelier · Gestion & hospitalité · Restauration & art de vivre |
-| `/destinations` | 14 sites touristiques de Guinée, filtrables par région |
+| `/destinations` | 17 sites touristiques de Guinée, filtrables par région |
 | `/destinations/<site>` | Fiche détaillée de chaque site (infos pratiques, incontournables, galerie) |
 | `/contact` | Coordonnées, carte, formulaire |
-| `/credits` | Crédits et licences des photos |
 
 ## Démarrer en local
 
@@ -63,12 +62,12 @@ message prérempli. Pour recevoir les messages directement : créez un formulair
 ## Photos
 
 Les photos sont dans `src/assets/photos/` (optimisées automatiquement en WebP et en plusieurs tailles au build).
-Elles proviennent de Wikimedia Commons sous licences Creative Commons (CC BY / CC BY-SA) : **le crédit de l'auteur
-doit rester affiché** (sur chaque photo et sur `/credits`). Les métadonnées sont dans `src/data/photo-credits.json`.
+Les crédits ne sont plus affichés sur le site. Plusieurs photos proviennent de Wikimedia Commons sous licences
+Creative Commons (CC BY / CC BY-SA), qui exigent normalement de citer l'auteur : leurs sources et licences restent
+consignées dans `src/data/photo-credits.json`. Remplacez-les par vos propres photos si possible.
 
 Pour utiliser vos propres photos : déposez `mon-image.jpg` dans `src/assets/photos/` et référencez-la par son nom
-(`mon-image`) dans `destinations.ts` ou dans une page. Une photo sans entrée dans `photo-credits.json`
-s'affiche sans crédit.
+(`mon-image`) dans `destinations.ts` ou dans une page.
 
 ## Logo
 

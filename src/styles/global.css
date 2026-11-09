@@ -407,25 +407,6 @@ a:hover .media--zoom img {
   transform: scale(1.05);
 }
 
-.credit {
-  position: absolute;
-  right: 10px;
-  bottom: 8px;
-  z-index: 2;
-  max-width: calc(100% - 20px);
-  font-size: 0.62rem;
-  letter-spacing: 0.04em;
-  color: rgba(255, 255, 255, 0.78);
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.55);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.credit a:hover {
-  color: var(--white);
-  text-decoration: underline;
-}
-
 /* ---------- Reveal on scroll (only when JS is available) ---------- */
 
 .js [data-reveal] {

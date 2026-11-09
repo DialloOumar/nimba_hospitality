@@ -123,7 +123,7 @@ const steps = [
         {
           expertises.map((e, i) => (
             <a href={url('/expertises') + `#${['developpement', 'gestion', 'restauration'][i]}`} class="exp-card" data-reveal style={`--delay:${i * 0.1}s`}>
-              <Photo k={e.photo} alt={e.alt} sizes="(min-width: 900px) 33vw, 100vw" widths={[480, 800, 1200]} class="exp-media media--zoom" credit={false} />
+              <Photo k={e.photo} alt={e.alt} sizes="(min-width: 900px) 33vw, 100vw" widths={[480, 800, 1200]} class="exp-media media--zoom" />
               <div class="exp-body">
                 <span class="exp-num">{e.n}</span>
                 <h3 class="h3">{e.title}</h3>

@@ -190,7 +190,7 @@ const practical = [
             <div class="chapter-visual">
               <Photo k={c.photo} alt={c.alt} sizes="(min-width: 900px) 50vw, 100vw" class="chapter-main" wipe />
               <div class="chapter-inset" data-reveal style="--delay:.35s">
-                <Photo k={c.inset} alt={c.insetAlt} sizes="(min-width: 900px) 20vw, 40vw" credit={false} />
+                <Photo k={c.inset} alt={c.insetAlt} sizes="(min-width: 900px) 20vw, 40vw" />
               </div>
               <span class="chapter-num" aria-hidden="true">
                 {c.n}
@@ -389,9 +389,6 @@ const practical = [
     grid-column: 4 / 10;
     grid-row: 8 / 13;
     z-index: 3;
-  }
-  .collage :global(.credit) {
-    font-size: 0.55rem;
   }
   .collage-badge {
     position: absolute;

@@ -1,8 +1,7 @@
 ---
-// Responsive photo with optional on-image credit (required by CC BY / CC BY-SA licences),
-// optional scroll parallax and optional "wipe" reveal.
+// Responsive photo with optional scroll parallax and optional "wipe" reveal.
 import { Picture } from 'astro:assets';
-import { photo, credit as getCredit } from '../lib/photos';
+import { photo } from '../lib/photos';
 
 interface Props {
   k: string;
@@ -10,7 +9,6 @@ interface Props {
   sizes?: string;
   widths?: number[];
   eager?: boolean;
-  credit?: boolean;
   class?: string;
   imgClass?: string;
   /** Parallax strength (0.05–0.15). The .media frame clips the overflow. */
@@ -25,7 +23,6 @@ const {
   sizes = '100vw',
   widths = [480, 800, 1200, 1600, 2200],
   eager = false,
-  credit = true,
   class: cls = '',
   imgClass = '',
   parallax,
@@ -33,7 +30,6 @@ const {
 } = Astro.props;
 
 const img = photo(k);
-const c = getCredit(k);
 const MAX = 2400;
 const usable = widths.filter((w) => w <= img.width && w <= MAX);
 const top = Math.min(img.width, MAX);
@@ -59,26 +55,5 @@ const fallbackWidth = Math.min(img.width, 1600);
       class={imgClass}
     />
   </div>
-  {
-    credit && c && (
-      <span class="credit">
-        {c.page ? (
-          <a href={c.page} target="_blank" rel="noopener">
-            © {c.artist}
-          </a>
-        ) : (
-          <>© {c.artist}</>
-        )}
-        {c.licenseUrl && (
-          <>
-            {' · '}
-            <a href={c.licenseUrl} target="_blank" rel="noopener license">
-              {c.license}
-            </a>
-          </>
-        )}
-      </span>
-    )
-  }
   <slot />
 </div>

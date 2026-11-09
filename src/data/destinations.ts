@@ -18,7 +18,8 @@ export interface Destination {
   excerpt: string;
   lead: string;
   body: string[];
-  highlights: string[];
+  /** A highlight can link to another destination page. */
+  highlights: Array<string | { text: string; href: string }>;
   info: {
     location: string;
     fromConakry: string;
@@ -71,7 +72,7 @@ export const DESTINATIONS: Destination[] = [
     kicker: 'Au large de Conakry',
     region: 'maritime',
     photo: 'kassa',
-    gallery: ['loos'],
+    gallery: ['room-plage', 'kassa-crepuscule'],
     featured: true,
     excerpt: "Un archipel de sable et de palmiers, à une courte traversée de la capitale.",
     lead:
@@ -81,16 +82,97 @@ export const DESTINATIONS: Destination[] = [
       "Sur Tamara, les vestiges de l'ancien pénitencier de Fotoba rappellent une page plus sombre de l'histoire. Entre baignade, balades à l'ombre des manguiers et poisson braisé sur la plage, les îles de Loos sont l'escapade idéale d'une journée ou d'un week-end.",
     ],
     highlights: [
-      'Les plages de Kassa et de Room',
-      "Les vestiges du pénitencier de Fotoba, sur l'île de Tamara",
-      "Un poisson braisé face à l'océan",
-      'Le coucher de soleil lors du retour en bateau',
+      { text: 'Les plages de l’île de Kassa', href: '/destinations/ile-de-kassa' },
+      { text: 'Les criques de l’île de Room', href: '/destinations/ile-de-room' },
+      { text: "Les vestiges du pénitencier de Fotoba, sur l'île de Tamara", href: '/destinations/ile-de-tamara' },
+      { text: "Un poisson braisé face à l'océan, sur l'île de Kassa", href: '/destinations/ile-de-kassa' },
+      { text: 'Le coucher de soleil lors du retour en bateau', href: '/experiences#heure-doree' },
     ],
     info: {
       location: 'Archipel au large de Conakry',
       fromConakry: '≈ 30 à 45 min de bateau',
       season: 'Novembre à mai (saison sèche)',
       idealFor: "Plage, détente, escapade d'un jour",
+    },
+  },
+  {
+    slug: 'ile-de-kassa',
+    name: 'Île de Kassa',
+    kicker: 'Îles de Loos',
+    region: 'maritime',
+    photo: 'kassa-mer',
+    gallery: ['kassa-crepuscule', 'kassa'],
+    excerpt: "La plus proche des îles de Loos : sable blond, palmiers et poisson braisé à deux pas de Conakry.",
+    lead:
+      "Première escale de l'archipel des îles de Loos, Kassa est la plage préférée des Conakrykas : une courte traversée suffit pour troquer l'agitation de la capitale contre le sable et les palmiers.",
+    body: [
+      "Kassa est l'île la plus proche de Conakry et la plus fréquentée de l'archipel. Ses plages de sable bordées de cocotiers s'animent surtout le week-end, lorsque familles et groupes d'amis viennent y passer la journée entre baignade, musique et repas face à l'océan.",
+      "En semaine, l'île retrouve son rythme paisible : villages de pêcheurs, pirogues colorées tirées sur le sable et balades à l'ombre des manguiers. Les petits restaurants de plage servent poisson et fruits de mer grillés, pêchés le matin même.",
+    ],
+    highlights: [
+      'Une journée de plage à quelques minutes de Conakry',
+      'Le poisson braisé servi les pieds dans le sable',
+      'Les villages de pêcheurs et leurs pirogues colorées',
+      { text: 'Le retour en bateau au coucher du soleil', href: '/experiences#heure-doree' },
+    ],
+    info: {
+      location: 'Îles de Loos, au large de Conakry',
+      fromConakry: '≈ 30 min de bateau',
+      season: 'Novembre à mai (saison sèche)',
+      idealFor: 'Plage, baignade, sortie en famille',
+    },
+  },
+  {
+    slug: 'ile-de-room',
+    name: 'Île de Room',
+    kicker: 'Îles de Loos',
+    region: 'maritime',
+    photo: 'room-plage',
+    gallery: ['room-rochers', 'room-gouverneur'],
+    excerpt: "Criques discrètes et eaux calmes : l'île la plus secrète des îles de Loos, celle de la légende de L'Île au trésor.",
+    lead:
+      "Plus petite et plus confidentielle que sa voisine Kassa, l'île de Room séduit par ses criques tranquilles, ses eaux calmes et une atmosphère hors du temps.",
+    body: [
+      "Room se prête aux journées sans programme : baignade dans des eaux abritées, sieste à l'ombre des palmiers et longues promenades le long du rivage. Loin de l'affluence du week-end, c'est l'escapade idéale pour qui cherche le calme.",
+      "Une légende tenace veut que l'île ait inspiré à Robert Louis Stevenson son Île au trésor. Qu'on y croie ou non, l'ambiance s'y prête : sable doré, rochers sculptés par l'océan et couchers de soleil spectaculaires sur l'Atlantique.",
+    ],
+    highlights: [
+      'Des criques tranquilles, loin de la foule',
+      "La légende de L'Île au trésor de Stevenson",
+      "Le coucher de soleil sur l'Atlantique",
+      { text: 'Une escapade combinable avec Kassa dans la même journée', href: '/destinations/ile-de-kassa' },
+    ],
+    info: {
+      location: 'Îles de Loos, au large de Conakry',
+      fromConakry: '≈ 45 min de bateau',
+      season: 'Novembre à mai (saison sèche)',
+      idealFor: 'Calme, baignade, escapade romantique',
+    },
+  },
+  {
+    slug: 'ile-de-tamara',
+    name: 'Île de Tamara',
+    kicker: 'Îles de Loos',
+    region: 'maritime',
+    photo: 'tamara-fotoba',
+    excerpt: "La plus grande des îles de Loos : criques sauvages, mangrove et mémoire du pénitencier de Fotoba.",
+    lead:
+      "Plus vaste et plus sauvage que ses voisines, l'île de Tamara mêle nature préservée et page d'histoire : c'est ici, à Fotoba, que se dressent les murs de l'ancien pénitencier colonial.",
+    body: [
+      "Le pénitencier de Fotoba a fonctionné de 1905 à 1955. L'administration coloniale y a enfermé des prisonniers et des opposants, dont des résistants africains à la colonisation. Ses hauts murs de pierre et ses rangées de cellules, aujourd'hui gagnés par les manguiers, se visitent et forment un lieu de mémoire saisissant.",
+      "Au-delà du village de Fotoba, l'île dévoile une côte rocheuse ponctuée de petites criques, de mangroves et d'eaux claires. Loin de l'animation de Kassa, Tamara se découvre à pied, au rythme des villages de pêcheurs et des points de vue sur l'Atlantique.",
+    ],
+    highlights: [
+      'La visite du pénitencier de Fotoba (1905-1955)',
+      'Les criques rocheuses et la mangrove',
+      'Le village de pêcheurs de Fotoba',
+      { text: "Le tour des trois îles de l'archipel", href: '/destinations/iles-de-loos' },
+    ],
+    info: {
+      location: 'Îles de Loos, au large de Conakry',
+      fromConakry: '≈ 45 min à 1 h de bateau',
+      season: 'Novembre à mai (saison sèche)',
+      idealFor: 'Histoire, nature, randonnée',
     },
   },
   {
@@ -112,7 +194,7 @@ export const DESTINATIONS: Destination[] = [
       'La Grande Mosquée Fayçal',
       'Les collections du Musée national',
       "L'effervescence du marché de Madina",
-      "Un dîner sur la corniche, face à l'Atlantique",
+      { text: "Un dîner sur la corniche, face à l'Atlantique", href: '/experiences#heure-doree' },
     ],
     info: {
       location: "Presqu'île de Kaloum, Guinée Maritime",
@@ -247,7 +329,7 @@ export const DESTINATIONS: Destination[] = [
     highlights: [
       'La vue sur la falaise depuis le bassin',
       'La marche en forêt-galerie',
-      'Un circuit combiné avec Dalaba et Kambadaga',
+      { text: 'Un circuit combiné avec Dalaba et Kambadaga', href: '/destinations/chutes-de-kambadaga' },
     ],
     info: {
       location: 'Préfecture de Dalaba, Moyenne-Guinée',
@@ -351,7 +433,7 @@ export const DESTINATIONS: Destination[] = [
     highlights: [
       "Les prairies d'altitude dans la brume",
       'Une biodiversité endémique unique au monde',
-      'Les chimpanzés de Bossou, au pied du massif',
+      { text: 'Les chimpanzés de Bossou, au pied du massif', href: '/destinations/chimpanzes-de-bossou' },
       'N’Zérékoré et la culture de la Guinée forestière',
     ],
     info: {
@@ -404,7 +486,7 @@ export const DESTINATIONS: Destination[] = [
     highlights: [
       "La traversée d'un pont de lianes",
       "L'accueil des villages et leurs traditions",
-      'Les masques et les danses de la forêt',
+      { text: 'Les masques et les danses de la forêt', href: '/experiences#fetes' },
     ],
     info: {
       location: "Région de Macenta et N'Zérékoré, Guinée Forestière",

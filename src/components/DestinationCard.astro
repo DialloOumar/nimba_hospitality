@@ -16,7 +16,7 @@ const region = regionById(d.region);
 ---
 
 <a href={url(`/destinations/${d.slug}`)} class="dcard" data-region={d.region}>
-  <Photo k={d.photo} alt={d.name} sizes={sizes} widths={[400, 640, 900, 1200]} class="dcard-media media--zoom" credit={false} />
+  <Photo k={d.photo} alt={d.name} sizes={sizes} widths={[400, 640, 900, 1200]} class="dcard-media media--zoom" />
   <div class="dcard-shade" aria-hidden="true"></div>
   <div class="dcard-body">
     {showRegion && <span class="dcard-region">{region.name}</span>}

@@ -7,7 +7,7 @@ import DestinationCard from '../../components/DestinationCard.astro';
 import CtaBand from '../../components/CtaBand.astro';
 import { DESTINATIONS, regionById, type Destination } from '../../data/destinations';
 import { url } from '../../lib/url';
-import { photo, credit } from '../../lib/photos';
+import { photo } from '../../lib/photos';
 import { getImage } from 'astro:assets';
 
 export const getStaticPaths = (() =>
@@ -35,8 +35,7 @@ const lightbox = await Promise.all(
   (d.gallery ?? []).map(async (key, i) => {
     const src = photo(key);
     const big = await getImage({ src, width: Math.min(src.width, 1800), format: 'webp', quality: 80 });
-    const c = credit(key);
-    return { key, src: big.src, alt: `${d.name} — vue ${i + 2}`, credit: c ? `© ${c.artist}` : '' };
+    return { key, src: big.src, alt: `${d.name} — vue ${i + 2}` };
   }),
 );
 
@@ -75,12 +74,22 @@ const facts = [
           <h2 class="h3 dsub" data-reveal>À ne pas manquer</h2>
           <ul class="highlights" data-reveal>
             {
-              d.highlights.map((h) => (
-                <li>
-                  <Icon name="plus" />
-                  {h}
-                </li>
-              ))
+              d.highlights.map((h) =>
+                typeof h === 'string' ? (
+                  <li>
+                    <Icon name="check" />
+                    <span>{h}</span>
+                  </li>
+                ) : (
+                  <li class="is-link">
+                    <a href={url(h.href)} class="highlight-link">
+                      <Icon name="check" />
+                      <span>{h.text}</span>
+                      <Icon name="arrow" />
+                    </a>
+                  </li>
+                ),
+              )
             }
           </ul>
         </article>
@@ -124,14 +133,12 @@ const facts = [
                     alt={item.alt}
                     sizes={lightbox.length === 3 ? '(min-width: 900px) 33vw, 100vw' : '(min-width: 900px) 50vw, 100vw'}
                     class="gallery-media media--zoom"
-                    credit={false}
                     wipe
                   />
                   <span class="gallery-zoom" aria-hidden="true">
                     <Icon name="plus" />
                   </span>
                 </button>
-                {item.credit && <figcaption>{item.credit}</figcaption>}
               </figure>
             ))}
           </div>
@@ -283,6 +290,37 @@ const facts = [
     padding: 16px 0;
     border-bottom: 1px solid var(--line);
     color: var(--ink);
+  }
+  .highlights li.is-link {
+    padding: 0;
+  }
+  .highlight-link {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    width: 100%;
+    padding: 16px 0;
+    color: var(--green-800);
+    transition:
+      color 0.3s,
+      padding 0.4s var(--ease);
+  }
+  .highlight-link span {
+    flex: 1;
+    text-decoration: underline;
+    text-decoration-color: var(--gold-600);
+    text-underline-offset: 4px;
+  }
+  .highlight-link:hover,
+  .highlight-link:focus-visible {
+    color: var(--gold-600);
+    padding-left: 6px;
+  }
+  .highlight-link :global(svg:last-child) {
+    transition: transform 0.4s var(--ease);
+  }
+  .highlight-link:hover :global(svg:last-child) {
+    transform: translateX(4px);
   }
   .highlights :global(svg) {
     width: 18px;
@@ -613,7 +651,7 @@ const facts = [
 <script>
   const dialog = document.querySelector<HTMLDialogElement>('[data-lightbox]');
   if (dialog) {
-    const items: Array<{ src: string; alt: string; credit: string }> = JSON.parse(
+    const items: Array<{ src: string; alt: string }> = JSON.parse(
       dialog.querySelector('[data-lb-data]')!.textContent || '[]',
     );
     const img = dialog.querySelector<HTMLImageElement>('[data-lb-img]')!;
@@ -630,7 +668,7 @@ const facts = [
       img.style.animation = 'none';
       void img.offsetWidth;
       img.style.animation = '';
-      caption.textContent = it.credit ? `${it.alt} · ${it.credit}` : it.alt;
+      caption.textContent = it.alt;
       count.textContent = items.length > 1 ? `${index + 1} / ${items.length}` : '';
     };
     const go = (i: number) => {

@@ -22,7 +22,7 @@ const { href, title, text, photo } = Astro.props;
         <span class="next-text">{text}</span>
       </span>
       <span class="next-photo" aria-hidden="true">
-        <Photo k={photo} alt="" sizes="(min-width: 900px) 34vw, 100vw" credit={false} widths={[480, 800, 1200]} />
+        <Photo k={photo} alt="" sizes="(min-width: 900px) 34vw, 100vw" widths={[480, 800, 1200]} />
       </span>
     </a>
   </div>

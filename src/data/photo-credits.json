@@ -65,17 +65,6 @@
     "height": 1728,
     "file": "kassa.jpg"
   },
-  "loos": {
-    "title": "File:Visite des îles de loos 34.jpg",
-    "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f1/Visite_des_%C3%AEles_de_loos_34.jpg/3840px-Visite_des_%C3%AEles_de_loos_34.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-    "page": "https://commons.wikimedia.org/wiki/File:Visite_des_%C3%AEles_de_loos_34.jpg",
-    "artist": "Falilou224",
-    "license": "CC BY-SA 4.0",
-    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
-    "width": 4160,
-    "height": 1872,
-    "file": "loos.jpg"
-  },
   "mosquee-faycal": {
     "title": "File:Grande Mosquée Fayçal de Conakry 2.jpg",
     "thumb": "https://upload.wikimedia.org/wikipedia/commons/6/63/Grande_Mosqu%C3%A9e_Fay%C3%A7al_de_Conakry_2.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
@@ -362,5 +351,65 @@
     "license": "Utilisée avec autorisation",
     "licenseUrl": "",
     "file": "ont-jardin-palmiers.jpg"
+  },
+  "kassa-crepuscule": {
+    "title": "File:Crépuscule sur l'île de Kassa.jpg",
+    "page": "https://commons.wikimedia.org/wiki/File:Cr%C3%A9puscule_sur_l%27%C3%AEle_de_Kassa.jpg",
+    "artist": "Langozo",
+    "license": "CC0",
+    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "width": 3840,
+    "height": 2556,
+    "file": "kassa-crepuscule.jpg"
+  },
+  "kassa-mer": {
+    "title": "File:La mer de Kassa.jpg",
+    "page": "https://commons.wikimedia.org/wiki/File:La_mer_de_Kassa.jpg",
+    "artist": "Mohamed Finando",
+    "license": "CC0",
+    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "width": 2660,
+    "height": 1593,
+    "file": "kassa-mer.jpg"
+  },
+  "room-plage": {
+    "title": "File:Plage de Roume.jpg",
+    "page": "https://commons.wikimedia.org/wiki/File:Plage_de_Roume.jpg",
+    "artist": "Flucco",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "width": 3840,
+    "height": 2880,
+    "file": "room-plage.jpg"
+  },
+  "room-gouverneur": {
+    "title": "File:Plage du Gouverneur à Roume 1.jpg",
+    "page": "https://commons.wikimedia.org/wiki/File:Plage_du_Gouverneur_%C3%A0_Roume_1.jpg",
+    "artist": "Aboubacarkhoraa",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "width": 3840,
+    "height": 2560,
+    "file": "room-gouverneur.jpg"
+  },
+  "room-rochers": {
+    "title": "File:Strand nach Süden auf Roume.jpg",
+    "page": "https://commons.wikimedia.org/wiki/File:Strand_nach_S%C3%BCden_auf_Roume.jpg",
+    "artist": "Flucco",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "width": 3754,
+    "height": 2083,
+    "file": "room-rochers.jpg"
+  },
+  "tamara-fotoba": {
+    "title": "File:Île de fotoba.jpg",
+    "page": "https://commons.wikimedia.org/wiki/File:%C3%8Ele_de_fotoba.jpg",
+    "artist": "Kalissa Mamayimbé kir",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "width": 3840,
+    "height": 2375,
+    "file": "tamara-fotoba.jpg"
   }
 }
