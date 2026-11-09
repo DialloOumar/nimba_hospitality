@@ -225,6 +225,13 @@ const path = Astro.url.pathname;
     opacity: 0;
     transition: opacity 0.4s var(--ease);
   }
+  /* The closed menu must never cover the page or catch clicks. */
+  .mobile-menu[hidden] {
+    display: none;
+  }
+  .mobile-menu:not(.is-open) {
+    pointer-events: none;
+  }
   .mobile-menu.is-open {
     opacity: 1;
   }

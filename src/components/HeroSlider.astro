@@ -90,6 +90,9 @@ const pad = (n: number) => String(n).padStart(2, '0');
   .hero-slide.is-active {
     opacity: 1;
   }
+  .hero-slide:not(.is-active) {
+    pointer-events: none;
+  }
   .hero-slide :global(.media) {
     height: 100%;
     background: transparent;
