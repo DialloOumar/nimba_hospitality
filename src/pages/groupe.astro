@@ -5,6 +5,7 @@ import Photo from '../components/Photo.astro';
 import Icon from '../components/Icon.astro';
 import Logo from '../components/Logo.astro';
 import CtaBand from '../components/CtaBand.astro';
+import NextPage from '../components/NextPage.astro';
 import CultureStrip from '../components/CultureStrip.astro';
 import { url } from '../lib/url';
 
@@ -136,6 +137,8 @@ const values = [
       <hr class="rule-gold" data-reveal style="--delay:.16s" />
     </div>
   </section>
+
+  <NextPage href="/expertises" title="Nos expertises" text="Développement hôtelier, gestion & hospitalité, restauration & art de vivre : découvrez nos métiers." photo="ont-jardin-palmiers" />
 
   <CtaBand photo="kassa" />
 </Base>

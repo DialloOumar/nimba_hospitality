@@ -99,7 +99,7 @@ export const DESTINATIONS: Destination[] = [
     kicker: 'La capitale',
     region: 'maritime',
     photo: 'mosquee-faycal',
-    gallery: ['ont-conakry-soir', 'ont-conakry-centre'],
+    gallery: ['ont-conakry-soir', 'ont-conakry-centre', 'ont-i-love-guinee'],
     featured: true,
     excerpt: 'Une presqu’île vibrante entre océan, marchés animés et grands monuments.',
     lead:
@@ -116,7 +116,7 @@ export const DESTINATIONS: Destination[] = [
     ],
     info: {
       location: "Presqu'île de Kaloum, Guinée Maritime",
-      fromConakry: 'Aéroport international de Conakry-Gbessia',
+      fromConakry: 'Aéroport international Ahmed Sékou Touré',
       season: "Toute l'année ; plus agréable de novembre à avril",
       idealFor: 'Culture, gastronomie, vie nocturne',
     },

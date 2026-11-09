@@ -1,0 +1,623 @@
+---
+import Base from '../layouts/Base.astro';
+import Photo from '../components/Photo.astro';
+import Icon from '../components/Icon.astro';
+import CtaBand from '../components/CtaBand.astro';
+import NextPage from '../components/NextPage.astro';
+import { url } from '../lib/url';
+
+const chapters = [
+  {
+    id: 'fetes',
+    n: '01',
+    eyebrow: 'Fêtes & traditions',
+    title: 'Au rythme des <em>masques</em> et des tambours.',
+    photo: 'ont-danseurs',
+    alt: 'Danseurs en tenue traditionnelle lors d’un défilé',
+    inset: 'ont-fete-masques',
+    insetAlt: 'Masques traditionnels en défilé',
+    text: [
+      "Chaque région a ses rythmes. Masques de la forêt, danses mandingues portées par le djembé, chants peuls du Fouta, ballets du littoral : la Guinée est l'une des grandes terres de musique et de danse d'Afrique de l'Ouest.",
+      "Fondés dans les années 1950 par Keïta Fodéba, les Ballets Africains ont porté ces traditions sur les scènes du monde entier. Chaque année, autour du 2 octobre, fête de l'Indépendance, Conakry vibre au rythme des défilés, des costumes et des masques.",
+    ],
+    todo: [
+      'Assister à un défilé de masques',
+      "S'initier au djembé auprès d'un maître percussionniste",
+      'Découvrir un spectacle de ballet traditionnel',
+      "Célébrer la fête de l'Indépendance, le 2 octobre",
+    ],
+    links: [
+      { href: '/destinations/ponts-de-lianes', label: 'Traditions de Guinée forestière' },
+      { href: '/destinations/conakry', label: 'Conakry' },
+    ],
+  },
+  {
+    id: 'heure-doree',
+    n: '02',
+    eyebrow: "L'heure dorée",
+    title: "Quand l'Atlantique <em>s'embrase.</em>",
+    photo: 'ont-coucher-soleil',
+    alt: 'Silhouettes de palmiers au coucher du soleil',
+    inset: 'ont-pirogue',
+    insetAlt: 'Pirogue aux couleurs nationales',
+    text: [
+      "Sur la côte guinéenne, le soleil se couche dans un embrasement d'ocre et d'or. Depuis la corniche de Conakry, une plage des îles de Loos ou le littoral de Boffa, c'est l'heure où la ville ralentit et où les terrasses s'animent.",
+      "Les palmiers se découpent en ombres chinoises, les pirogues rentrent au port, et l'air se charge de l'odeur du poisson braisé : un moment simple, que nous aimons offrir à nos hôtes.",
+    ],
+    todo: [
+      "Un dîner de poisson braisé face à l'océan",
+      'Le retour des îles de Loos en bateau au crépuscule',
+      'Une promenade sur la corniche à la tombée du jour',
+    ],
+    links: [
+      { href: '/destinations/iles-de-loos', label: 'Îles de Loos' },
+      { href: '/destinations/conakry', label: 'Conakry' },
+    ],
+  },
+  {
+    id: 'conakry',
+    n: '03',
+    eyebrow: 'Conakry vibrante',
+    title: 'Une capitale qui se vit <em>en musique.</em>',
+    photo: 'ont-conakry-centre',
+    alt: 'Vue sur un rond-point fleuri du centre de Conakry',
+    inset: 'ont-i-love-guinee',
+    insetAlt: 'Le monument « I love Guinée » au bord de l’eau à Conakry',
+    text: [
+      "Capitale effervescente bâtie entre mer et collines, Conakry se découvre à pied et en musique : ronds-points fleuris, marchés débordants de couleurs, ateliers de couture et de teinture, terrasses où l'on refait le monde jusque tard dans la nuit.",
+      "C'est aussi la porte d'entrée du pays, et souvent la première rencontre avec le sens de l'accueil guinéen.",
+    ],
+    todo: [
+      "L'effervescence du marché de Madina",
+      'Les tissus teints à la main et les ateliers de couture',
+      'Les soirées musicales de la capitale',
+      'La photo souvenir devant « I ♥ Guinée »',
+    ],
+    links: [{ href: '/destinations/conakry', label: 'Découvrir Conakry' }],
+  },
+  {
+    id: 'nature',
+    n: '04',
+    eyebrow: 'Nature généreuse',
+    title: "Un pays d'un <em>vert éclatant.</em>",
+    photo: 'ont-paysage-vert',
+    alt: 'Palmiers et falaise couverte de végétation sous un ciel bleu',
+    inset: 'ont-course-pirogues',
+    insetAlt: 'Course de pirogues sur un lac',
+    text: [
+      "Pendant la saison des pluies, le pays se pare d'un vert éclatant : rizières, palmeraies, falaises couvertes de végétation et cascades au plus fort de leur débit. Une saison rêvée pour les photographes et les amoureux de nature.",
+      "En saison sèche, les pistes s'ouvrent vers le Fouta-Djalon, les savanes du Niger et les forêts du sud, pour des randonnées et des rencontres inoubliables.",
+    ],
+    todo: [
+      'Les cascades du Fouta-Djalon en fin de saison des pluies',
+      'Une randonnée sur les plateaux et dans les canyons',
+      'Une fête au fil de l’eau, entre pirogues et chants',
+    ],
+    links: [
+      { href: '/destinations/fouta-djalon', label: 'Fouta-Djalon' },
+      { href: '/destinations/chutes-de-kambadaga', label: 'Kambadaga' },
+      { href: '/destinations/voile-de-la-mariee', label: 'Voile de la Mariée' },
+    ],
+  },
+];
+
+const practical = [
+  {
+    icon: 'compass',
+    t: 'Arrivée',
+    d: "L'aéroport international Ahmed Sékou Touré de Conakry est relié à de nombreuses capitales africaines et européennes.",
+  },
+  {
+    icon: 'check',
+    t: 'Formalités',
+    d: 'Un visa est requis pour la plupart des nationalités : vérifiez les conditions auprès des autorités consulaires guinéennes avant le départ.',
+  },
+  {
+    icon: 'plus',
+    t: 'Santé',
+    d: 'Le certificat de vaccination contre la fièvre jaune est exigé. Consultez un centre de vaccinations internationales avant votre voyage.',
+  },
+  {
+    icon: 'sun',
+    t: 'Saisons',
+    d: "Saison sèche de novembre à avril, idéale pour circuler ; saison des pluies de mai-juin à octobre, la plus verte.",
+  },
+  {
+    icon: 'star',
+    t: 'Monnaie',
+    d: 'Le franc guinéen (GNF). Prévoyez des espèces pour vos déplacements en dehors de Conakry.',
+  },
+  {
+    icon: 'mail',
+    t: 'Langues',
+    d: 'Le français est la langue officielle ; le soussou, le pular et le malinké sont largement parlés.',
+  },
+] as const;
+---
+
+<Base
+  title="Vivre la Guinée"
+  description="Fêtes et masques, couchers de soleil sur l'Atlantique, Conakry en musique, nature d'un vert éclatant : les expériences à vivre en Guinée, et nos conseils pour préparer votre voyage."
+  ogPhoto="ont-danseurs"
+>
+  <!-- Hero: split layout with a photo collage (keeps photos crisp) -->
+  <section class="xhero on-dark">
+    <div class="container xhero-inner">
+      <div class="xhero-copy">
+        <span class="eyebrow hero-in" style="--d:.15s">Expériences</span>
+        <h1 class="display xhero-title">
+          <span class="line"><span class="hero-in" style="--d:.3s">Vivre la Guinée,</span></span>
+          <span class="line"><em class="hero-in" style="--d:.45s">intensément.</em></span>
+        </h1>
+        <p class="hero-in" style="--d:.6s">
+          Des masques qui dansent dans les rues de Conakry aux couchers de soleil sur l'Atlantique, la Guinée se vit avec
+          tous les sens. Voici ce que nous aimons faire découvrir à nos hôtes.
+        </p>
+        <nav class="xhero-chapters hero-in" style="--d:.75s" aria-label="Chapitres">
+          {
+            chapters.map((c) => (
+              <a href={`#${c.id}`}>
+                <span>{c.n}</span>
+                {c.eyebrow}
+              </a>
+            ))
+          }
+          <a href="#preparer"><span>05</span>Préparer votre voyage</a>
+        </nav>
+      </div>
+      <div class="collage" aria-hidden="false">
+        <div class="collage-a hero-in" style="--d:.2s">
+          <Photo k="ont-fete-masques" alt="Masques traditionnels en défilé" eager sizes="(min-width: 900px) 26vw, 50vw" />
+        </div>
+        <div class="collage-b hero-in" style="--d:.4s">
+          <Photo k="ont-carnaval" alt="Carnaval coloré dans les rues de Conakry" eager sizes="(min-width: 900px) 24vw, 50vw" />
+        </div>
+        <div class="collage-c hero-in" style="--d:.6s">
+          <Photo k="ont-coucher-soleil" alt="Coucher de soleil sur les palmiers" eager sizes="(min-width: 900px) 22vw, 50vw" />
+        </div>
+        <span class="collage-badge hero-in" style="--d:.9s">
+          <strong>4</strong> régions,<br />mille traditions
+        </span>
+      </div>
+    </div>
+  </section>
+
+  {
+    chapters.map((c, i) => (
+      <section class:list={['section chapter', { 'section--sand': i % 2 === 1 }]} id={c.id}>
+        <div class="container">
+          <div class:list={['chapter-grid', { 'chapter-grid--reverse': i % 2 === 1 }]}>
+            <div class="chapter-visual">
+              <Photo k={c.photo} alt={c.alt} sizes="(min-width: 900px) 50vw, 100vw" class="chapter-main" wipe />
+              <div class="chapter-inset" data-reveal style="--delay:.35s">
+                <Photo k={c.inset} alt={c.insetAlt} sizes="(min-width: 900px) 20vw, 40vw" credit={false} />
+              </div>
+              <span class="chapter-num" aria-hidden="true">
+                {c.n}
+              </span>
+            </div>
+            <div class="chapter-copy">
+              <span class="eyebrow" data-reveal>
+                <span class="num">{c.n}</span> {c.eyebrow}
+              </span>
+              <h2 class="h2" data-reveal style="--delay:.08s" set:html={c.title} />
+              {c.text.map((p, j) => (
+                <p class:list={{ lead: j === 0 }} data-reveal style={`--delay:${0.12 + j * 0.06}s`}>
+                  {p}
+                </p>
+              ))}
+              <div class="todo" data-reveal style="--delay:.2s">
+                <span class="todo-title">À vivre</span>
+                <ul>
+                  {c.todo.map((t) => (
+                    <li>
+                      <Icon name="star" />
+                      {t}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div class="chapter-links" data-reveal style="--delay:.25s">
+                {c.links.map((l) => (
+                  <a href={url(l.href)} class="link-arrow">
+                    {l.label} <Icon name="arrow" />
+                  </a>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    ))
+  }
+
+  <!-- Practical guide -->
+  <section class="section section--green on-dark prep" id="preparer">
+    <div class="container">
+      <div class="prep-head">
+        <div>
+          <span class="eyebrow" data-reveal><span class="num">05</span> Préparer votre voyage</span>
+          <h2 class="h2" data-reveal style="--delay:.08s">Bien arriver, <em>bien vivre</em> son séjour.</h2>
+          <p data-reveal style="--delay:.14s">
+            Quelques repères pour préparer sereinement votre venue. Notre équipe reste à votre disposition pour toute
+            question.
+          </p>
+        </div>
+        <div class="prep-visual" data-reveal style="--delay:.1s">
+          <Photo k="ont-aeroport" alt="Aéroport international Ahmed Sékou Touré de Conakry" sizes="(min-width: 900px) 45vw, 100vw" wipe />
+        </div>
+      </div>
+
+      <ul class="prep-grid">
+        {
+          practical.map((p, i) => (
+            <li class="prep-card" data-reveal style={`--delay:${(i % 3) * 0.08}s`}>
+              <span class="prep-icon">
+                <Icon name={p.icon} />
+              </span>
+              <h3>{p.t}</h3>
+              <p>{p.d}</p>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="prep-note">
+        Informations indicatives, susceptibles d'évoluer : vérifiez-les auprès des autorités compétentes avant votre départ.
+      </p>
+    </div>
+  </section>
+
+  <NextPage href="/groupe" title="Le groupe" text="Qui sommes-nous ? L’histoire et les valeurs de Nimba Hospitality Group." photo="nimba" />
+
+  <CtaBand />
+</Base>
+
+<style>
+  /* ---------- Hero ---------- */
+  .xhero {
+    position: relative;
+    overflow: hidden;
+    background:
+      radial-gradient(ellipse at 85% 20%, rgba(194, 155, 87, 0.18), transparent 55%),
+      radial-gradient(ellipse at 10% 90%, rgba(34, 101, 74, 0.45), transparent 60%),
+      var(--green-950);
+    padding: calc(var(--header-h) + clamp(40px, 6vw, 88px)) 0 clamp(64px, 8vw, 112px);
+  }
+  .xhero-inner {
+    display: grid;
+    gap: clamp(48px, 6vw, 96px);
+    align-items: center;
+  }
+  @media (min-width: 960px) {
+    .xhero-inner {
+      grid-template-columns: 1fr 1.05fr;
+      min-height: calc(92svh - var(--header-h));
+    }
+  }
+  .xhero-title {
+    color: var(--white);
+    font-size: clamp(3rem, 7vw, 6.4rem);
+  }
+  .xhero-title .line {
+    display: block;
+    overflow: hidden;
+    padding-bottom: 0.06em;
+  }
+  .xhero-title .line > * {
+    display: inline-block;
+  }
+  .xhero-title em {
+    color: var(--gold-300);
+  }
+  .xhero-copy > p {
+    max-width: 500px;
+    margin: 28px 0 36px;
+    font-size: 1.05rem;
+    color: rgba(255, 255, 255, 0.8);
+  }
+  .xhero-chapters {
+    display: grid;
+    gap: 0;
+    max-width: 420px;
+    border-top: 1px solid rgba(255, 255, 255, 0.14);
+  }
+  .xhero-chapters a {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+    font-family: var(--serif);
+    font-size: 1.25rem;
+    color: rgba(255, 255, 255, 0.85);
+    transition:
+      color 0.3s,
+      padding 0.4s var(--ease);
+  }
+  .xhero-chapters a span {
+    font-size: 0.95rem;
+    color: var(--gold-300);
+  }
+  .xhero-chapters a:hover {
+    color: var(--gold-300);
+    padding-left: 8px;
+  }
+
+  .hero-in {
+    animation: x-rise 1.3s var(--ease-out) both;
+    animation-delay: var(--d, 0s);
+  }
+  .xhero-title .hero-in {
+    animation-name: x-line;
+  }
+  @keyframes x-rise {
+    from {
+      opacity: 0;
+      transform: translateY(28px);
+    }
+  }
+  @keyframes x-line {
+    from {
+      transform: translateY(105%);
+    }
+  }
+
+  /* Collage */
+  .collage {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: repeat(12, minmax(0, 1fr));
+    aspect-ratio: 1 / 1.02;
+  }
+  .collage > div :global(.media) {
+    width: 100%;
+    height: 100%;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.35);
+  }
+  .collage-a {
+    grid-column: 1 / 7;
+    grid-row: 1 / 10;
+    z-index: 1;
+  }
+  .collage-b {
+    grid-column: 6 / 13;
+    grid-row: 3 / 9;
+    z-index: 2;
+  }
+  .collage-c {
+    grid-column: 4 / 10;
+    grid-row: 8 / 13;
+    z-index: 3;
+  }
+  .collage :global(.credit) {
+    font-size: 0.55rem;
+  }
+  .collage-badge {
+    position: absolute;
+    right: 0;
+    bottom: 6%;
+    z-index: 4;
+    display: grid;
+    place-content: center;
+    width: clamp(112px, 12vw, 150px);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: var(--gold);
+    color: var(--green-950);
+    text-align: center;
+    font-family: var(--serif);
+    font-size: clamp(0.95rem, 1.2vw, 1.15rem);
+    line-height: 1.15;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    animation-name: x-pop;
+  }
+  .collage-badge strong {
+    display: block;
+    font-size: 2.4em;
+    font-weight: 500;
+    line-height: 1;
+  }
+  @keyframes x-pop {
+    from {
+      opacity: 0;
+      transform: scale(0.6) rotate(-12deg);
+    }
+  }
+  @media (max-width: 959px) {
+    .collage {
+      max-width: 560px;
+      width: 100%;
+      margin-inline: auto;
+    }
+  }
+
+  /* ---------- Chapters ---------- */
+  .chapter-grid {
+    display: grid;
+    gap: clamp(48px, 7vw, 112px);
+    align-items: center;
+  }
+  @media (min-width: 960px) {
+    .chapter-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+    .chapter-grid--reverse .chapter-visual {
+      order: 2;
+    }
+  }
+  .chapter-visual {
+    position: relative;
+    padding-bottom: clamp(40px, 6vw, 72px);
+  }
+  .chapter-visual :global(.chapter-main) {
+    aspect-ratio: 5 / 4.4;
+  }
+  .chapter-inset {
+    position: absolute;
+    right: clamp(-8px, -2vw, -32px);
+    bottom: 0;
+    width: 42%;
+    padding: 8px;
+    background: var(--ivory);
+    box-shadow: 0 24px 50px rgba(7, 31, 20, 0.22);
+  }
+  .section--sand .chapter-inset {
+    background: var(--sand);
+  }
+  .chapter-grid--reverse .chapter-inset {
+    right: auto;
+    left: clamp(-8px, -2vw, -32px);
+  }
+  .chapter-inset :global(.media) {
+    aspect-ratio: 4 / 3;
+  }
+  .chapter-num {
+    position: absolute;
+    top: -0.42em;
+    left: -0.06em;
+    font-family: var(--serif);
+    font-size: clamp(5rem, 11vw, 9.5rem);
+    line-height: 1;
+    color: var(--gold);
+    pointer-events: none;
+    z-index: 2;
+  }
+  .chapter-grid--reverse .chapter-num {
+    left: auto;
+    right: -0.06em;
+  }
+  @media (max-width: 959px) {
+    .chapter-inset {
+      right: 12px;
+    }
+    .chapter-grid--reverse .chapter-inset {
+      left: 12px;
+    }
+  }
+  .chapter-copy .h2 {
+    margin-bottom: 26px;
+  }
+  .chapter-copy .lead {
+    margin-bottom: 18px;
+  }
+  .todo {
+    margin: 32px 0 28px;
+    padding: 24px 26px;
+    border-left: 2px solid var(--gold);
+    background: rgba(255, 255, 255, 0.55);
+  }
+  .todo-title {
+    display: block;
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: var(--gold-600);
+    margin-bottom: 12px;
+  }
+  .todo ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 10px;
+  }
+  .todo li {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    color: var(--ink);
+    font-size: 0.95rem;
+  }
+  .todo :global(svg) {
+    width: 16px;
+    height: 16px;
+    flex: none;
+    margin-top: 5px;
+    color: var(--gold-600);
+  }
+  .chapter-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px 28px;
+  }
+
+  /* ---------- Practical guide ---------- */
+  .prep-head {
+    display: grid;
+    gap: clamp(36px, 5vw, 80px);
+    align-items: center;
+    margin-bottom: clamp(48px, 6vw, 80px);
+  }
+  @media (min-width: 960px) {
+    .prep-head {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  .prep-head p {
+    margin-top: 22px;
+    max-width: 46ch;
+  }
+  .prep-visual :global(.media) {
+    aspect-ratio: 16 / 10;
+  }
+  .prep-grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: clamp(16px, 2vw, 28px);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  @media (max-width: 960px) {
+    .prep-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 600px) {
+    .prep-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  .prep-card {
+    padding: clamp(24px, 3vw, 36px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.03);
+    transition:
+      background 0.4s var(--ease),
+      border-color 0.4s var(--ease),
+      transform 0.5s var(--ease);
+  }
+  .prep-card:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(194, 155, 87, 0.55);
+    transform: translateY(-4px);
+  }
+  .prep-icon {
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 1px solid rgba(194, 155, 87, 0.6);
+    color: var(--gold-300);
+    margin-bottom: 20px;
+  }
+  .prep-icon :global(svg) {
+    width: 22px;
+    height: 22px;
+  }
+  .prep-card h3 {
+    font-size: 1.6rem;
+    margin-bottom: 10px;
+  }
+  .prep-card p {
+    font-size: 0.92rem;
+  }
+  .prep-note {
+    margin-top: 32px;
+    font-size: 0.78rem;
+    color: rgba(255, 255, 255, 0.5);
+  }
+</style>

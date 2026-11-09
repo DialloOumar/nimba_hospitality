@@ -4,6 +4,7 @@ import PageHero from '../components/PageHero.astro';
 import Photo from '../components/Photo.astro';
 import Icon from '../components/Icon.astro';
 import CtaBand from '../components/CtaBand.astro';
+import NextPage from '../components/NextPage.astro';
 
 const areas = [
   {
@@ -35,8 +36,8 @@ const areas = [
       'Commercialisation, distribution et revenue management',
       'Expérience client et fidélisation',
     ],
-    photo: 'fouta-plateau',
-    alt: 'Paysage des plateaux du Fouta-Djalon',
+    photo: 'ont-jardin-passerelle',
+    alt: 'Passerelle au cœur d’un jardin tropical',
   },
   {
     id: 'restauration',
@@ -145,6 +146,8 @@ const audiences = [
       </div>
     </div>
   </section>
+
+  <NextPage href="/destinations" title="Destinations" text="Quatorze sites d’exception, des îles de Loos aux cimes du Nimba." photo="kambadaga" />
 
   <CtaBand photo="voile-mariee" />
 </Base>

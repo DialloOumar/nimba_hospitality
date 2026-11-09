@@ -2,6 +2,8 @@
 // "Culture vivante" — continuously scrolling strip of photographs.
 import { Picture } from 'astro:assets';
 import { photo, credit } from '../lib/photos';
+import { url } from '../lib/url';
+import Icon from './Icon.astro';
 
 interface Props {
   title?: string;
@@ -10,6 +12,9 @@ interface Props {
 const { title = 'Culture vivante', light = false } = Astro.props;
 
 const shots = [
+  { k: 'ont-fete-masques', caption: 'Défilé des masques', pos: 'center 30%' },
+  { k: 'ont-carnaval', caption: 'Carnaval de la Semaine de l’Indépendance' },
+  { k: 'ont-danseurs', caption: 'Danseurs en tenue traditionnelle' },
   { k: 'ont-cauris', caption: 'Parure en cauris' },
   { k: 'ont-pirogue', caption: 'Pirogue aux couleurs nationales' },
   { k: 'ont-anciens', caption: 'La sagesse des anciens' },
@@ -18,7 +23,7 @@ const shots = [
   { k: 'ont-course-pirogues', caption: 'Course de pirogues' },
   { k: 'ont-village-forestier', caption: 'Village de Guinée forestière' },
   { k: 'ont-conakry-soir', caption: 'Conakry au crépuscule' },
-].map((s) => ({ ...s, img: photo(s.k), credit: credit(s.k) }));
+].map((s: { k: string; caption: string; pos?: string }) => ({ ...s, img: photo(s.k), credit: credit(s.k) }));
 
 const credits = [...new Set(shots.map((s) => s.credit?.artist).filter(Boolean))];
 ---
@@ -55,6 +60,7 @@ const credits = [...new Set(shots.map((s) => s.credit?.artist).filter(Boolean))]
                     quality={80}
                     loading="lazy"
                     decoding="async"
+                    style={s.pos ? `object-position: ${s.pos}` : undefined}
                   />
                 </div>
                 <figcaption>{s.caption}</figcaption>
@@ -66,7 +72,10 @@ const credits = [...new Set(shots.map((s) => s.credit?.artist).filter(Boolean))]
     }
   </div>
 
-  <p class="container culture-credit">Photographies © {credits.join(', ')}</p>
+  <div class="container culture-foot">
+    <a href={url('/experiences')} class="link-arrow">Vivre la Guinée <Icon name="arrow" /></a>
+    <p class="culture-credit">Photographies © {credits.join(', ')}</p>
+  </div>
 </section>
 
 <style>
@@ -137,8 +146,19 @@ const credits = [...new Set(shots.map((s) => s.credit?.artist).filter(Boolean))]
   .culture--light .culture-credit {
     color: var(--muted);
   }
+  .culture-foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px 32px;
+    margin-top: 40px;
+  }
+  .culture--light .culture-foot .link-arrow {
+    color: var(--green-800);
+  }
   .culture-credit {
-    margin-top: 36px;
+    margin: 0;
     font-size: 0.72rem;
     color: rgba(255, 255, 255, 0.45);
   }

@@ -1,0 +1,105 @@
+---
+// Large "continue exploring" link shown at the end of a page, with a photo that reveals on hover.
+import Photo from './Photo.astro';
+import Icon from './Icon.astro';
+import { url } from '../lib/url';
+
+interface Props {
+  href: string;
+  title: string;
+  text: string;
+  photo: string;
+}
+const { href, title, text, photo } = Astro.props;
+---
+
+<section class="next">
+  <div class="container">
+    <a href={url(href)} class="next-link">
+      <span class="next-copy">
+        <span class="eyebrow">Continuer la découverte</span>
+        <span class="next-title">{title} <Icon name="arrow" /></span>
+        <span class="next-text">{text}</span>
+      </span>
+      <span class="next-photo" aria-hidden="true">
+        <Photo k={photo} alt="" sizes="(min-width: 900px) 34vw, 100vw" credit={false} widths={[480, 800, 1200]} />
+      </span>
+    </a>
+  </div>
+</section>
+
+<style>
+  .next {
+    background: var(--ivory);
+    border-top: 1px solid var(--line);
+  }
+  .next-link {
+    display: grid;
+    gap: 32px;
+    align-items: center;
+    padding: clamp(56px, 8vw, 112px) 0;
+  }
+  @media (min-width: 900px) {
+    .next-link {
+      grid-template-columns: 1.3fr 1fr;
+      gap: 64px;
+    }
+  }
+  .next-copy {
+    display: grid;
+  }
+  .next-title {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3em;
+    font-family: var(--serif);
+    font-size: clamp(3rem, 7vw, 6rem);
+    line-height: 1;
+    color: var(--green-900);
+    transition: color 0.4s var(--ease);
+  }
+  .next-title :global(svg) {
+    width: 0.6em;
+    height: 0.6em;
+    color: var(--gold);
+    transition: transform 0.5s var(--ease);
+  }
+  .next-text {
+    margin-top: 20px;
+    max-width: 46ch;
+    color: var(--muted);
+  }
+  .next-link:hover .next-title {
+    color: var(--gold-600);
+    font-style: italic;
+  }
+  .next-link:hover .next-title :global(svg) {
+    transform: translateX(12px);
+  }
+  .next-photo {
+    display: block;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    clip-path: inset(8% 8% 8% 8%);
+    transition: clip-path 0.9s var(--ease-out);
+  }
+  .next-photo :global(.media) {
+    height: 100%;
+  }
+  .next-photo :global(img) {
+    transform: scale(1.12);
+    transition: transform 1.2s var(--ease-out);
+  }
+  .next-link:hover .next-photo,
+  .next-link:focus-visible .next-photo {
+    clip-path: inset(0 0 0 0);
+  }
+  .next-link:hover .next-photo :global(img) {
+    transform: scale(1);
+  }
+  @media (hover: none) {
+    .next-photo {
+      clip-path: none;
+    }
+  }
+</style>
